@@ -56,6 +56,6 @@ public class ChartReader {
     }
 
     public void addNote(Note n, int lineNo){
-        
+        ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").add(JSON.toJSON(n));
     }
 }

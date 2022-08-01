@@ -30,6 +30,12 @@ public class NotePanel {
         g.setStroke(new BasicStroke(3));
         g.setColor(Color.YELLOW);
         g.drawLine(50,550,410,550);
+        //高亮主轨道
+        g.setColor(new Color(208, 220, 255, 69));
+        g.fillRect(90,50,40,500);
+        g.fillRect(170,50,40,500);
+        g.fillRect(250,50,40,500);
+        g.fillRect(330,50,40,500);
         //进度条
         //g.setStroke(new BasicStroke(2));
         g.setColor(Color.WHITE);

@@ -31,7 +31,7 @@ public class EditorPanel extends Panel implements Runnable,MouseListener {
         this.addMouseWheelListener(e -> {
             //滚轮
             //设置时间
-            time += e.getWheelRotation()* np.eachTime/4;
+            time += -1*e.getWheelRotation()* np.eachTime/4;
             if(time < 0.0) time = 0;
             if(time > cr.songTime) time = cr.songTime;
             //进度条
@@ -68,7 +68,7 @@ public class EditorPanel extends Panel implements Runnable,MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //note放置
+
     }
 
     @Override
