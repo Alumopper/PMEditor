@@ -1,6 +1,8 @@
 package top.alumopper.PMEditor;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Test {
     public static void main(String[] args) {
@@ -16,7 +18,7 @@ public class Test {
 
 }
 
-class MyPanel extends Panel {
+class MyPanel extends Panel  {
     private int x;
     private int y;
     private int diameter;
@@ -25,6 +27,13 @@ class MyPanel extends Panel {
         x = 50;
         y = 50;
         diameter = 100;
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                System.out.println(e);
+            }
+        });
     }
 
     public void paint(Graphics g) {

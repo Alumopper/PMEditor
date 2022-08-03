@@ -1,5 +1,6 @@
 package top.alumopper.PMEditor;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -9,47 +10,17 @@ public class Editor implements KeyListener {
 
 
     public static void main(String[] args) throws IOException {
-        Frame fr = new Frame("PMEditor");
+        Frame fr = new JFrame("PMEditor");
         fr.setSize(900,600);
         fr.setBackground(Color.black);
-        EditorPanel ep = new EditorPanel();
+        EditorPanel ep = new EditorPanel(fr);
         fr.add(ep);
         fr.setVisible(true);
         fr.addWindowListener(
-                new WindowListener() {
-                    @Override
-                    public void windowOpened(WindowEvent e) {
-
-                    }
-
+                new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         System.exit(0);
-                    }
-
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-
-                    }
-
-                    @Override
-                    public void windowIconified(WindowEvent e) {
-
-                    }
-
-                    @Override
-                    public void windowDeiconified(WindowEvent e) {
-
-                    }
-
-                    @Override
-                    public void windowActivated(WindowEvent e) {
-
-                    }
-
-                    @Override
-                    public void windowDeactivated(WindowEvent e) {
-
                     }
                 }
         );
