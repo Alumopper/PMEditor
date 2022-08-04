@@ -68,6 +68,9 @@ public class NotePanel extends Component {
         mousePos.y -= ep.fr.getLocationOnScreen().y + 30;
         //如果在范围内，就绘制按键
         if(EditorPanel.pointInRect(mousePos,80,50,440,550)){
+            //自动吸附
+            mousePos.x = (mousePos.x-80)/40*40+100;
+            mousePos.y = (mousePos.y-50)/(int)(Math.round(delPixel/lines))*(int)(Math.round(delPixel/lines))+46;
             g.setColor(new Color(90, 210, 229, 131));
             g.fillRect(mousePos.x-20,mousePos.y-4,40,8);
         }
