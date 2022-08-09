@@ -8,7 +8,7 @@ public class NotePanel extends Component {
     public double scale;    //缩放大小（有多少横线间隔）
     public ArrayList<Tap> taps; //tap音符
     public ArrayList<Drag> drags;   //drag音符
-    public double eachTime; //横线之间的时间间隔
+    public double eachTime; //粗横线之间的时间间隔
 
     public EditorPanel ep;
 
@@ -43,10 +43,18 @@ public class NotePanel extends Component {
         //横线
         double delLine = -ep.time%eachTime/eachTime;
         double delPixel = 500/scale;
+        boolean owo = true;
+        double baseLoc = 0;
+        int baseBeat = 0;
         for(double i = 0;i < scale+1;i += 1.0/lines){
             if(delLine+i >= 0 && delLine+i <= scale ){
-                if(lines == 3){
-                    System.out.println();
+                if(owo){
+                    //第一次绘制横线
+                    owo = false;
+                    //获取第一条线对应的位置
+                    baseLoc = (delLine+i)*delPixel;
+                    //获取第一条线对应的拍数
+                    baseBeat = ((int)i*lines)%lines;
                 }
                 if(Math.round(i*100)/100.0 == Math.round(i)){
                     g.setStroke(new BasicStroke(3));
@@ -66,14 +74,24 @@ public class NotePanel extends Component {
         Point mousePos = MouseInfo.getPointerInfo().getLocation();
         mousePos.x -= ep.fr.getLocationOnScreen().x;
         mousePos.y -= ep.fr.getLocationOnScreen().y + 30;
+        int beat = 0;
         //如果在范围内，就绘制按键
         if(EditorPanel.pointInRect(mousePos,80,50,440,550)){
             //自动吸附
             mousePos.x = (mousePos.x-80)/40*40+100;
-            mousePos.y = (mousePos.y-50)/(int)(Math.round(delPixel/lines))*(int)(Math.round(delPixel/lines))+46;
-            g.setColor(new Color(90, 210, 229, 131));
-            g.fillRect(mousePos.x-20,mousePos.y-4,40,8);
+            mousePos.y = (int)(Math.round(((mousePos.y-50)/(delPixel/lines)+1))*(delPixel/lines)+46-baseLoc);
+            beat = (int)((550-mousePos.y)/(delPixel/lines));
+            if(mousePos.y <= 550){
+                g.setColor(new Color(90, 210, 229, 131));
+                g.fillRect(mousePos.x-20,mousePos.y-4,40,8);
+            }
         }
+        //节拍显示
+        int bar = (int)(ep.time / eachTime);
+        beat += baseBeat;
+        bar += beat/lines;
+        beat %= lines;
+        g.drawString("Beat "+bar+":"+beat+"/"+lines,10,20);
     }
 
     private void drawProgressBar(Graphics2D g){

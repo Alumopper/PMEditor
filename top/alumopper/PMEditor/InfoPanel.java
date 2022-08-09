@@ -32,5 +32,6 @@ public class InfoPanel {
             g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
             g.drawString(String.valueOf(ep.curLine),775,73);
         }
+        //拍数
     }
 }

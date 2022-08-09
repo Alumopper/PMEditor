@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Editor implements KeyListener {
+public class Editor {
 
 
     public static void main(String[] args) throws IOException {
@@ -25,20 +25,5 @@ public class Editor implements KeyListener {
                 }
         );
         new Thread(ep).run();
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
     }
 }
