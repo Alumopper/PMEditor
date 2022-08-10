@@ -72,7 +72,7 @@ public class NotePanel extends Component {
         }
         g.setStroke(new BasicStroke(3));
         g.setColor(Color.YELLOW);
-        g.drawLine(80,550,440,550);
+        //g.drawLine(80,550,440,550);
         //鼠标相对位置
         Point mousePos = MouseInfo.getPointerInfo().getLocation();
         mousePos.x -= ep.fr.getLocationOnScreen().x;
@@ -84,14 +84,14 @@ public class NotePanel extends Component {
             key = (mousePos.x-80)/40;
             mousePos.x = (mousePos.x-80)/40*40+100;
             mousePos.y = (int)(Math.round(((mousePos.y-50)/(delPixel/lines)+1))*(delPixel/lines)+46-baseLoc);
-            beat = (int)((550-mousePos.y)/(delPixel/lines));
+            beat = (int)((550-mousePos.y-baseLoc)/(delPixel/lines));
             if(mousePos.y <= 550){
                 g.setColor(new Color(90, 210, 229, 131));
                 g.fillRect(mousePos.x-20,mousePos.y-4,40,8);
             }
         }
         //节拍显示
-        int bar = (int)(ep.time / eachTime);
+        int bar = (int)((ep.time + baseLoc/delPixel*eachTime) / eachTime);
         beat += baseBeat;
         bar += beat/lines;
         beat %= lines;

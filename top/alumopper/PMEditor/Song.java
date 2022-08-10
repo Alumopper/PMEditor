@@ -12,6 +12,7 @@ public class Song {
 
     public Song(String file,float bpm) throws IOException, NoPlayerException, CannotRealizeException {
         this.songPlayer = Manager.createRealizedPlayer(new File(file).toURI().toURL());
+        this.songPlayer.setRate(0.1f);
         this.bpm = bpm;
     }
 }
