@@ -45,7 +45,7 @@ public class NotePanel extends Component {
         g.drawString(String.format("%.2f/%.2f",ep.time,ep.cr.song.songPlayer.getDuration().getSeconds()),10,40);
         //横线
         double delLine = -ep.time%eachTime/eachTime;
-        double delPixel = 500/scale;
+        double delPixel = 500/scale;    //粗横线之间的间距
         boolean owo = true;
         double baseLoc = 0;
         int baseBeat = 0;
@@ -98,7 +98,18 @@ public class NotePanel extends Component {
         g.drawString("Beat "+bar+":"+beat+"/"+lines,10,20);
         this.bar = bar;
         this.beat = beat;
-    }
+        //渲染note
+        for (Line l : ep.cr.lines) {
+            for (Note n : l.notes) {
+                //计算y
+                double noteY = 542 - (n.time- ep.time)*(delPixel/eachTime);
+                if(noteY < 50 || noteY > 542) continue;
+                g.setColor(new Color(90, 210, 229, 255));
+                g.fillRect(n.key*40+80,(int)Math.round(noteY),40,8);
+                }
+            }
+
+        }
 
     private void drawProgressBar(Graphics2D g){
         g.drawLine(100,25,800,25);

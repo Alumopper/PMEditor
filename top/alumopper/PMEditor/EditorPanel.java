@@ -24,6 +24,7 @@ public class EditorPanel extends Panel implements Runnable {
     public boolean pressShift = false;
     public boolean pressCtrl = false;
     public boolean pressSpace = false;
+    public boolean pressS = false;
 
     private int noteType = Note.TAP;
 
@@ -88,6 +89,16 @@ public class EditorPanel extends Panel implements Runnable {
                             }
                         }else{
                             pressSpace = true;
+                        }
+                    }
+                    if(e.getKeyCode() == KeyEvent.VK_S){
+                        if(pressS){
+                            pressS = false;
+                            //保存
+                            cr.save();
+                            System.out.println("awa");
+                        }else{
+                            pressS = true;
                         }
                     }
                     return false;

@@ -2,6 +2,7 @@ package top.alumopper.PMEditor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import javax.media.CannotRealizeException;
 import javax.media.NoPlayerException;
@@ -12,9 +13,10 @@ import java.util.ArrayList;
 public class ChartReader {
 
     ArrayList<Line> lines = new ArrayList<Line>();
-    public Song song;
-    public double songTime;
-    public JSONObject chart;    //谱面文件
+    public Song song;           //曲子
+    public double songTime;     //曲子时间
+    public JSONObject chart;    //谱面数据
+    public File chartFile;      //谱面文件
 
     public ChartReader(String s) throws IOException {
         //读取谱面
@@ -22,6 +24,7 @@ public class ChartReader {
         StringBuilder builder = new StringBuilder();
 
         File file = new File(s);
+        chartFile = file;
         InputStreamReader streamReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(streamReader);
 
@@ -59,5 +62,19 @@ public class ChartReader {
         ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").add(JSON.toJSON(n));
         lines.get(lineNo).notes.add(n);
         System.out.println();
+    }
+
+    public void save(){
+        //保存
+        FileWriter f;
+        try {
+            f = new FileWriter(chartFile);
+            f.write("");
+            f.flush();
+            f.write(chart.toString(SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat));
+            f.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

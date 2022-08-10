@@ -1,14 +1,24 @@
 {
-    "lines":[
-        {
-            "notes":[
-            ],
-            "speed":2.0
-        }
-    ],
-    "song": {
-        "name": "Pluto.wav",
-        "bpm": 172,
-        "time": 195
-    }
+	"song":{
+		"name":"Pluto.wav",
+		"time":195,
+		"bpm":172
+	},
+	"lines":[
+		{
+			"notes":[
+				{
+					"time":1.0465115904808044,
+					"type":0,
+					"key":2
+				},
+				{
+					"time":0.7848836928606033,
+					"type":0,
+					"key":4
+				}
+			],
+			"speed":2.0
+		}
+	]
 }
