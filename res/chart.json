@@ -2,54 +2,6 @@
     "lines":[
         {
             "notes":[
-                {
-                    "key":0,
-                    "time":0.110,
-                    "type":0,
-                    "Position":0.22
-                },
-                {
-                    "key":1,
-                    "time":0.120,
-                    "type":0,
-                    "Position":0.24
-                },
-                {
-                    "key":1,
-                    "time":1.220,
-                    "type":0,
-                    "Position":2.44
-                },
-                {
-                    "key":1,
-                    "time":2.560,
-                    "type":0,
-                    "Position":5.12
-                },
-                {
-                    "key":3,
-                    "time":2.560,
-                    "type":0,
-                    "Position":5.12
-                },
-                {
-                    "key":1,
-                    "time":3.200,
-                    "type":0,
-                    "Position":6.4
-                },
-                {
-                    "key":1,
-                    "time":3.560,
-                    "type":0,
-                    "Position":7.12
-                },
-                {
-                    "key":1,
-                    "time":4.000,
-                    "type":0,
-                    "Position":8
-                }
             ],
             "speed":2.0
         }

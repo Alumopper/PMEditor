@@ -13,6 +13,7 @@ public class Editor {
         Frame fr = new JFrame("PMEditor");
         fr.setSize(900,600);
         fr.setBackground(Color.black);
+        fr.setResizable(false);
         EditorPanel ep = new EditorPanel(fr);
         fr.add(ep);
         fr.setVisible(true);

@@ -36,9 +36,9 @@ public class ChartReader {
             for (JSONObject note : line.getJSONArray("notes").toJavaList(JSONObject.class)) {
                 l.notes.add(new Note(
                         note.getInteger("key"),
-                        note.getInteger("time"),
-                        note.getInteger("type"),
-                        note.getFloat("Position"))
+                        note.getDouble("time"),
+                        note.getInteger("type")
+                        )
                 );
             }
             lines.add(l);
@@ -57,5 +57,7 @@ public class ChartReader {
 
     public void addNote(Note n, int lineNo){
         ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").add(JSON.toJSON(n));
+        lines.get(lineNo).notes.add(n);
+        System.out.println();
     }
 }

@@ -15,7 +15,6 @@ public class EditorPanel extends Panel implements Runnable {
 
     public Frame fr;
     private Scrollbar t;
-
     private NotePanel np;   //note显示区域
     private InfoPanel ip;   //信息显示区域
     public ChartReader cr; //读谱器
@@ -25,6 +24,8 @@ public class EditorPanel extends Panel implements Runnable {
     public boolean pressShift = false;
     public boolean pressCtrl = false;
     public boolean pressSpace = false;
+
+    private int noteType = Note.TAP;
 
     public EditorPanel(Frame fr) throws IOException {
         this.fr = fr;
@@ -57,7 +58,7 @@ public class EditorPanel extends Panel implements Runnable {
                 np.scale += -1*e.getWheelRotation();
                 if(np.scale < 1) np.scale = 1;
                 if(np.scale > 16) np.scale = 16;
-            }else if(pressShift){
+            }else{
                 //调整横线数量
                 np.lines += -1*e.getWheelRotation();
                 if(np.lines < 1) np.lines = 1;
@@ -72,27 +73,24 @@ public class EditorPanel extends Panel implements Runnable {
             }
         });
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-                new KeyEventDispatcher() {
-                    @Override
-                    public boolean dispatchKeyEvent(KeyEvent e) {
-                        pressCtrl = e.isControlDown();
-                        pressShift = e.isShiftDown();
-                        if(e.getKeyCode() == KeyEvent.VK_SPACE){
-                            if(pressSpace){
-                                pressSpace = false;
-                                //播放
-                                if(cr.song.songPlayer.getState() != Player.Started){
-                                    cr.song.songPlayer.setMediaTime(new Time(time));
-                                    cr.song.songPlayer.start();
-                                }else{
-                                    cr.song.songPlayer.stop();
-                                }
+                e -> {
+                    pressCtrl = e.isControlDown();
+                    pressShift = e.isShiftDown();
+                    if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                        if(pressSpace){
+                            pressSpace = false;
+                            //播放
+                            if(cr.song.songPlayer.getState() != Player.Started){
+                                cr.song.songPlayer.setMediaTime(new Time(time));
+                                cr.song.songPlayer.start();
                             }else{
-                                pressSpace = true;
+                                cr.song.songPlayer.stop();
                             }
+                        }else{
+                            pressSpace = true;
                         }
-                        return false;
                     }
+                    return false;
                 }
         );
         this.addMouseListener(new MouseAdapter() {
@@ -112,6 +110,10 @@ public class EditorPanel extends Panel implements Runnable {
                         curLine = qwq;
                         ip.tf.setText(String.valueOf(curLine));
                     }
+                }
+                if(pointInRect(clickPoint,80,50,430,550)){
+                    //在note放置区内，放置note
+                    putNote();
                 }
             }
         });
@@ -155,5 +157,13 @@ public class EditorPanel extends Panel implements Runnable {
         }else {
             return false;
         }
+    }
+
+    public void putNote(){
+        //计算note的时间
+        double noteTime = np.eachTime*(np.bar+(double)np.beat/np.lines);
+        //添加note
+        Note curr = new Note(np.key,noteTime,noteType);
+        cr.addNote(curr,curLine);
     }
 }

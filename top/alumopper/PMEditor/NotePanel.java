@@ -9,6 +9,9 @@ public class NotePanel extends Component {
     public ArrayList<Tap> taps; //tap音符
     public ArrayList<Drag> drags;   //drag音符
     public double eachTime; //粗横线之间的时间间隔
+    public int bar;         //鼠标对应的小节数
+    public int beat;        //鼠标对应的拍数
+    public int key;         //鼠标对应的列数
 
     public EditorPanel ep;
 
@@ -54,7 +57,7 @@ public class NotePanel extends Component {
                     //获取第一条线对应的位置
                     baseLoc = (delLine+i)*delPixel;
                     //获取第一条线对应的拍数
-                    baseBeat = ((int)i*lines)%lines;
+                    baseBeat = (int)(i*lines)%lines;
                 }
                 if(Math.round(i*100)/100.0 == Math.round(i)){
                     g.setStroke(new BasicStroke(3));
@@ -78,6 +81,7 @@ public class NotePanel extends Component {
         //如果在范围内，就绘制按键
         if(EditorPanel.pointInRect(mousePos,80,50,440,550)){
             //自动吸附
+            key = (mousePos.x-80)/40;
             mousePos.x = (mousePos.x-80)/40*40+100;
             mousePos.y = (int)(Math.round(((mousePos.y-50)/(delPixel/lines)+1))*(delPixel/lines)+46-baseLoc);
             beat = (int)((550-mousePos.y)/(delPixel/lines));
@@ -92,6 +96,8 @@ public class NotePanel extends Component {
         bar += beat/lines;
         beat %= lines;
         g.drawString("Beat "+bar+":"+beat+"/"+lines,10,20);
+        this.bar = bar;
+        this.beat = beat;
     }
 
     private void drawProgressBar(Graphics2D g){
