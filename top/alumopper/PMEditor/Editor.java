@@ -10,13 +10,14 @@ public class Editor {
 
 
     public static void main(String[] args) throws IOException {
-        Frame fr = new JFrame("PMEditor");
+        JFrame fr = new JFrame("PMEditor");
         fr.setSize(900,600);
         fr.setBackground(Color.black);
         fr.setResizable(false);
         EditorPanel ep = new EditorPanel(fr);
         fr.add(ep);
         fr.setVisible(true);
+        
         fr.addWindowListener(
                 new WindowAdapter() {
                     @Override

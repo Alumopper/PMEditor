@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class EditorPanel extends Panel implements Runnable {
+public class EditorPanel extends JPanel implements Runnable {
 
     public Frame fr;
     private Scrollbar t;
@@ -20,6 +20,7 @@ public class EditorPanel extends Panel implements Runnable {
     public ChartReader cr; //读谱器
     public double time;    //时间
     public int curLine;     //当前的判定线
+    public InfoBoxContainer info;   //消息提示框
 
     public boolean pressShift = false;
     public boolean pressCtrl = false;
@@ -64,13 +65,6 @@ public class EditorPanel extends Panel implements Runnable {
                 np.lines += -1*e.getWheelRotation();
                 if(np.lines < 1) np.lines = 1;
                 if(np.lines > 16) np.lines = 16;
-            }
-        });
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyTyped(e);
-                System.out.println(e);
             }
         });
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
@@ -126,20 +120,28 @@ public class EditorPanel extends Panel implements Runnable {
                     //在note放置区内，放置note
                     putNote();
                 }
+                info.addInfo("qwq",0);
             }
         });
         time = 0;
+        //消息提示框
+        info = new InfoBoxContainer(650,500);
     }
 
     public void paint(Graphics g){
         //note展示区域
         np.draw((Graphics2D) g);
+        //信息展示区
         ip.draw((Graphics2D) g);
+        //消息框
+        info.draw((Graphics2D) g);
+        //super.paintChildren(g);
     }
 
     public void repaint(){
         //离屏绘制
         Image im = createImage(getWidth(),getHeight());
+        if(im == null) return;  //特性避免
         Graphics dbg = im.getGraphics();
         paint(dbg);
         Graphics g = getGraphics();
