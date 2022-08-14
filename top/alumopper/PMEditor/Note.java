@@ -1,6 +1,7 @@
 package top.alumopper.PMEditor;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class Note {
     public static final int TAP = 0;
@@ -47,5 +48,18 @@ public class Note {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Note note = (Note) o;
+        return key == note.key && Double.compare(note.time, time) == 0 && type == note.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key, time, type);
     }
 }

@@ -9,6 +9,7 @@ import javax.media.NoPlayerException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ChartReader {
 
@@ -62,6 +63,25 @@ public class ChartReader {
         ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").add(JSON.toJSON(n));
         lines.get(lineNo).notes.add(n);
         System.out.println();
+    }
+
+    public void delNote(Note n, int lineNo){
+        //JSON去除
+        Iterator<Object> o = ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").iterator();
+        while (o.hasNext()){
+            JSONObject curNote = (JSONObject) o.next();
+            if(curNote.getDoubleValue("time") == n.time && curNote.getIntValue("key") == n.key && curNote.getIntValue("type") == n.type){
+                o.remove();
+            }
+        }
+        //数列去除
+        Iterator<Note> qwq = lines.get(lineNo).notes.iterator();
+        while (qwq.hasNext()){
+            Note curNote = qwq.next();
+            if(curNote.equals(n)){
+                qwq.remove();
+            }
+        }
     }
 
     public void save(){

@@ -179,4 +179,25 @@ public class EditorPanel extends JPanel implements Runnable {
         Note curr = new Note(np.key,noteTime,noteType);
         cr.addNote(curr,curLine);
     }
+
+    public void putNote(double time,int key){
+        //添加note
+        Note curr = new Note(key,time,noteType);
+        cr.addNote(curr,curLine);
+    }
+
+    public void putNote(Note n){
+        cr.addNote(n,curLine);
+    }
+
+    public void delNote(double time,int key){
+        //删除note
+        Note curr = new Note(key,time,noteType);
+        cr.delNote(curr,curLine);
+    }
+
+    public void delNote(Note n){
+        cr.delNote(n,curLine);
+    }
+
 }
