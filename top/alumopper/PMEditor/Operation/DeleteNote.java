@@ -12,15 +12,15 @@ public class DeleteNote extends Operation {
 
     @Override
     public void redo(EditorPanel ep) {
-        //重新放回去
         super.redo(ep);
-        ep.putNote(n);
+        //删掉
+        ep.cr.delNote(n,ep.curLine);
     }
 
     @Override
     public void revoke(EditorPanel ep) {
+        //重新放回去
         super.revoke(ep);
-        //删掉
-        ep.delNote(n);
+        ep.cr.addNote(n,ep.curLine);
     }
 }

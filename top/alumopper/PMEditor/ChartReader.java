@@ -59,10 +59,15 @@ public class ChartReader {
         songTime = (int)(song.songPlayer.getDuration().getSeconds()*100)/100.0;
     }
 
-    public void addNote(Note n, int lineNo){
+    public boolean addNote(Note n, int lineNo){
+        for (Note qwq: lines.get(lineNo).notes ) {
+            if(qwq.equals(n)){
+                return false;
+            }
+        }
         ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").add(JSON.toJSON(n));
         lines.get(lineNo).notes.add(n);
-        System.out.println();
+        return true;
     }
 
     public void delNote(Note n, int lineNo){

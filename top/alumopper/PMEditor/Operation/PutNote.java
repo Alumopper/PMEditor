@@ -13,14 +13,14 @@ public class PutNote extends Operation {
 
 	@Override
 	public void redo(EditorPanel ep) {
-		//删除
 		super.redo(ep);
-		ep.delNote(n);
+		ep.cr.addNote(n,ep.curLine);
 	}
 
 	@Override
 	public void revoke(EditorPanel ep) {
+		//删除
 		super.revoke(ep);
-		ep.putNote(n);
+		ep.cr.delNote(n,ep.curLine);
 	}
 }

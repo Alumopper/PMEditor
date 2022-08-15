@@ -86,7 +86,11 @@ public class NotePanel extends Component {
             mousePos.y = (int)(Math.round(((mousePos.y-50)/(delPixel/lines)+1))*(delPixel/lines)+46-baseLoc);
             beat = (int)((550-mousePos.y-baseLoc)/(delPixel/lines));
             if(mousePos.y <= 550){
-                g.setColor(new Color(90, 210, 229, 131));
+                if(ep.pressCtrl){
+                    g.setColor(new Color(229, 90, 90, 131));
+                }else {
+                    g.setColor(new Color(90, 229, 97, 131));
+                }
                 g.fillRect(mousePos.x-20,mousePos.y-4,40,8);
             }
         }
@@ -104,11 +108,14 @@ public class NotePanel extends Component {
                 //计算y
                 double noteY = 542 - (n.time- ep.time)*(delPixel/eachTime);
                 if(noteY < 50 || noteY > 542) continue;
-                g.setColor(new Color(90, 210, 229, 255));
+                if(n.type == Note.TAP){
+                    g.setColor(new Color(90, 210, 229, 255));
+                }else if(n.type == Note.DRAG){
+                    g.setColor(new Color(243, 241, 33, 255));
+                }
                 g.fillRect(n.key*40+80,(int)Math.round(noteY),40,8);
                 }
             }
-
         }
 
     private void drawProgressBar(Graphics2D g){

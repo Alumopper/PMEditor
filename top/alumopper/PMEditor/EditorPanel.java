@@ -1,5 +1,9 @@
 package top.alumopper.PMEditor;
 
+import top.alumopper.PMEditor.Operation.DeleteNote;
+import top.alumopper.PMEditor.Operation.OperationManager;
+import top.alumopper.PMEditor.Operation.PutNote;
+
 import javax.media.Control;
 import javax.media.Player;
 import javax.media.Time;
@@ -21,13 +25,16 @@ public class EditorPanel extends JPanel implements Runnable {
     public double time;    //时间
     public int curLine;     //当前的判定线
     public InfoBoxContainer info;   //消息提示框
+    public OperationManager opm;    //操作管理器
 
     public boolean pressShift = false;
     public boolean pressCtrl = false;
     public boolean pressSpace = false;
     public boolean pressS = false;
+    public boolean pressY = false;
+    public boolean pressZ = false;
 
-    private int noteType = Note.TAP;
+    public int noteType = Note.TAP;
 
     public EditorPanel(Frame fr) throws IOException {
         this.fr = fr;
@@ -37,6 +44,7 @@ public class EditorPanel extends JPanel implements Runnable {
         cr = new ChartReader("res/chart.json");
         np = new NotePanel(this);
         ip = new InfoPanel(this);
+        opm = new OperationManager(this);
         //进度条
         t = new Scrollbar(Scrollbar.VERTICAL,0,1,0,101);
         t.setLocation(50,50);
@@ -89,10 +97,34 @@ public class EditorPanel extends JPanel implements Runnable {
                         if(pressS){
                             pressS = false;
                             //保存
-                            cr.save();
-                            System.out.println("awa");
+                            if(pressCtrl){
+                                cr.save();
+                                info.addInfo("保存成功",0);
+                            }
                         }else{
                             pressS = true;
+                        }
+                    }
+                    if(e.getKeyCode() == KeyEvent.VK_Z){
+                        if(pressZ){
+                            pressZ = false;
+                            //撤销
+                            if(pressCtrl){
+                                opm.revoke();
+                            }
+                        }else{
+                            pressZ = true;
+                        }
+                    }
+                    if(e.getKeyCode() == KeyEvent.VK_Y){
+                        if(pressY){
+                            pressY = false;
+                            //重做
+                            if(pressCtrl){
+                                opm.redo();
+                            }
+                        }else{
+                            pressY = true;
                         }
                     }
                     return false;
@@ -117,10 +149,23 @@ public class EditorPanel extends JPanel implements Runnable {
                     }
                 }
                 if(pointInRect(clickPoint,80,50,430,550)){
-                    //在note放置区内，放置note
-                    putNote();
+                    //在note放置区内
+                    if(pressCtrl){
+                        //删除键
+                        delNote();
+                    }else{
+                        //放置
+                        if(e.getButton() == MouseEvent.BUTTON1){
+                            //左键放置tap
+                            noteType = Note.TAP;
+                            putNote();
+                        }else if(e.getButton() == MouseEvent.BUTTON3){
+                            //右键放置drag
+                            noteType = Note.DRAG;
+                            putNote();
+                        }
+                    }
                 }
-                info.addInfo("qwq",0);
             }
         });
         time = 0;
@@ -177,27 +222,47 @@ public class EditorPanel extends JPanel implements Runnable {
         double noteTime = np.eachTime*(np.bar+(double)np.beat/np.lines);
         //添加note
         Note curr = new Note(np.key,noteTime,noteType);
-        cr.addNote(curr,curLine);
+        if(!cr.addNote(curr,curLine)){
+            info.addInfo("放置失败，note重叠",1);
+        }
+        opm.addOp(new PutNote(curr));
     }
 
     public void putNote(double time,int key){
         //添加note
         Note curr = new Note(key,time,noteType);
-        cr.addNote(curr,curLine);
+        if(!cr.addNote(curr,curLine)){
+            info.addInfo("放置失败，note重叠",1);
+        }
+        opm.addOp(new PutNote(curr));
     }
 
     public void putNote(Note n){
-        cr.addNote(n,curLine);
+        if(!cr.addNote(n,curLine)){
+            info.addInfo("放置失败，note重叠",1);
+        }
+        opm.addOp(new PutNote(n));
+    }
+
+    public void delNote(){
+        //计算note的时间
+        double noteTime = np.eachTime*(np.bar+(double)np.beat/np.lines);
+        //添加note
+        Note curr = new Note(np.key,noteTime,noteType);
+        cr.delNote(curr,curLine);
+        opm.addOp(new DeleteNote(curr));
     }
 
     public void delNote(double time,int key){
         //删除note
         Note curr = new Note(key,time,noteType);
         cr.delNote(curr,curLine);
+        opm.addOp(new DeleteNote(curr));
     }
 
     public void delNote(Note n){
         cr.delNote(n,curLine);
+        opm.addOp(new DeleteNote(n));
     }
 
 }

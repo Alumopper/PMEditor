@@ -23,6 +23,7 @@ public class OperationManager {
             i++;
         }
         opHistory.add(o);
+        index ++;
     }
 
     public void redo(){
@@ -30,7 +31,7 @@ public class OperationManager {
             opHistory.get(index+1).redo(ep);
             index ++;
         }else {
-
+            ep.info.addInfo("无更多操作可重做",1);
         }
     }
 
@@ -39,7 +40,7 @@ public class OperationManager {
             opHistory.get(index).revoke(ep);
             index --;
         }else {
-
+            ep.info.addInfo("无更多操作可撤销",1);
         }
     }
 }
