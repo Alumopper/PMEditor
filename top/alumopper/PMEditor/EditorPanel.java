@@ -35,6 +35,7 @@ public class EditorPanel extends JPanel implements Runnable {
     public boolean pressZ = false;
 
     public int noteType = Note.TAP;
+    public boolean notSaved = false;
 
     public EditorPanel(Frame fr) throws IOException {
         this.fr = fr;
@@ -77,8 +78,12 @@ public class EditorPanel extends JPanel implements Runnable {
         });
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
                 e -> {
+                    //键盘监听
+                    //ctrl
                     pressCtrl = e.isControlDown();
+                    //shift
                     pressShift = e.isShiftDown();
+                    //空格
                     if(e.getKeyCode() == KeyEvent.VK_SPACE){
                         if(pressSpace){
                             pressSpace = false;
@@ -93,6 +98,7 @@ public class EditorPanel extends JPanel implements Runnable {
                             pressSpace = true;
                         }
                     }
+                    //S
                     if(e.getKeyCode() == KeyEvent.VK_S){
                         if(pressS){
                             pressS = false;
@@ -100,22 +106,13 @@ public class EditorPanel extends JPanel implements Runnable {
                             if(pressCtrl){
                                 cr.save();
                                 info.addInfo("保存成功",0);
+                                notSaved = false;
                             }
                         }else{
                             pressS = true;
                         }
                     }
-                    if(e.getKeyCode() == KeyEvent.VK_Z){
-                        if(pressZ){
-                            pressZ = false;
-                            //撤销
-                            if(pressCtrl){
-                                opm.revoke();
-                            }
-                        }else{
-                            pressZ = true;
-                        }
-                    }
+                    //Y
                     if(e.getKeyCode() == KeyEvent.VK_Y){
                         if(pressY){
                             pressY = false;
@@ -125,6 +122,18 @@ public class EditorPanel extends JPanel implements Runnable {
                             }
                         }else{
                             pressY = true;
+                        }
+                    }
+                    //Z
+                    if(e.getKeyCode() == KeyEvent.VK_Z){
+                        if(pressZ){
+                            pressZ = false;
+                            //撤销
+                            if(pressCtrl){
+                                opm.revoke();
+                            }
+                        }else{
+                            pressZ = true;
                         }
                     }
                     return false;
@@ -165,6 +174,8 @@ public class EditorPanel extends JPanel implements Runnable {
                             putNote();
                         }
                     }
+                    notSaved = true;
+                    fr.setTitle(fr.getTitle() + " *");
                 }
             }
         });

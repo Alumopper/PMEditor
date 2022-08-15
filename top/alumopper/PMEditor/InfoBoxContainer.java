@@ -46,8 +46,12 @@ public class InfoBoxContainer {
         }
     }
 
+    public void addInfo(String text, String text2,int type){
+        infos.add(0,new InfoBox(type,text,text2));
+    }
+
     public void addInfo(String text,int type){
-        infos.add(0,new InfoBox(type,text));
+        infos.add(0,new InfoBox(type,text,""));
     }
 
     public void update(){

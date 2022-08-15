@@ -17,17 +17,20 @@ public class InfoBox extends Animation{
     public static int width = 200;
     public static int height = 40;
     public String text;
+    public String text2;
 
     public InfoBox(int colorType) {
         super(10, 0.3, 1);
         this.colorType = colorType;
         text = "";
+        text2 = "";
     }
 
-    public InfoBox(int colorType, String text) {
+    public InfoBox(int colorType, String text, String text2) {
         super(10, 0.3, 1);
         this.colorType = colorType;
         this.text = text;
+        this.text2 = text2;
     }
 
     @Override
@@ -38,7 +41,8 @@ public class InfoBox extends Animation{
         //绘制文字
         g.setColor(Color.black);
         g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
-        g.drawString(text,(int)(10+aniPos.x+(width - easeOutCubic(currTime,0,width,inTime))),aniPos.y+20);
+        g.drawString(text,(int)(10+aniPos.x+(width - easeOutCubic(currTime,0,width,inTime))),aniPos.y+18);
+        g.drawString(text2,(int)(10+aniPos.x+(width - easeOutCubic(currTime,0,width,inTime))),aniPos.y+36);
         //System.out.println(easeOutCubic(currTime,0,width,inTime));
     }
 
@@ -49,7 +53,8 @@ public class InfoBox extends Animation{
         //绘制文字
         g.setColor(Color.black);
         g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
-        g.drawString(text,aniPos.x+10,aniPos.y+20);
+        g.drawString(text,aniPos.x+10,aniPos.y+18);
+        g.drawString(text2,aniPos.x+10,aniPos.y+36);
     }
 
     @Override
@@ -63,7 +68,8 @@ public class InfoBox extends Animation{
         g.setColor(Color.black);
         g.setColor(new Color(pre.getRed(),pre.getGreen(),pre.getBlue(),(int)((time-currTime)/outTime*255)));
         g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
-        g.drawString(text,aniPos.x+10,aniPos.y+20);
+        g.drawString(text,aniPos.x+10,aniPos.y+18);
+        g.drawString(text2,aniPos.x+10,aniPos.y+36);
     }
 
     public void draw(Graphics2D g){
