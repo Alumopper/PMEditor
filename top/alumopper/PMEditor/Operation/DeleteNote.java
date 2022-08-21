@@ -1,6 +1,7 @@
 package top.alumopper.PMEditor.Operation;
 
 import top.alumopper.PMEditor.*;
+import top.alumopper.PMEditor.Component.EditorPanel;
 
 public class DeleteNote extends Operation {
     //删除了一个键

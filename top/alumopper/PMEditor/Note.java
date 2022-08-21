@@ -7,9 +7,9 @@ public class Note {
     public static final int TAP = 0;
     public static final int DRAG = 1;
 
-    int key;
-    double time;
-    int type;
+    public int key;
+    public double time;
+    public int type;
 
     public Note(int key, double time, int type) {
         this.key = key;

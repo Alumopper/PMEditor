@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 public class ChartReader {
 
-    ArrayList<Line> lines = new ArrayList<Line>();
+    public ArrayList<Line> lines = new ArrayList<Line>();
     public Song song;           //曲子
     public double songTime;     //曲子时间
     public JSONObject chart;    //谱面数据
@@ -49,7 +49,7 @@ public class ChartReader {
         }
         //
         try {
-            song = new Song("res/"+chart.getJSONObject("song").getString("name"),chart.getJSONObject("song").getFloat("bpm"));
+            song = new Song("./res/charts/" + Editor.chart + "/" + chart.getJSONObject("song").getString("name"),chart.getJSONObject("song").getFloat("bpm"));
         } catch (NoPlayerException e) {
             e.printStackTrace();
         } catch (CannotRealizeException e) {

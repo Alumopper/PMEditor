@@ -1,6 +1,6 @@
 package top.alumopper.PMEditor.Operation;
 
-import top.alumopper.PMEditor.EditorPanel;
+import top.alumopper.PMEditor.Component.EditorPanel;
 import top.alumopper.PMEditor.Note;
 
 public class PutNote extends Operation {

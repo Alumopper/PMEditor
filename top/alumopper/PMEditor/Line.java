@@ -3,7 +3,7 @@ package top.alumopper.PMEditor;
 import java.util.ArrayList;
 
 public class Line {
-    ArrayList<Note> notes = new ArrayList<>();
+    public ArrayList<Note> notes = new ArrayList<>();
     float speed;    //速度：12像素/s
 
     public Line(float speed){
