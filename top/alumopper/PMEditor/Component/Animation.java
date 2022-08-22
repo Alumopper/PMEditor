@@ -1,4 +1,4 @@
-package top.alumopper.PMEditor;
+package top.alumopper.PMEditor.Component;
 
 import java.awt.*;
 

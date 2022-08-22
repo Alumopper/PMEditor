@@ -11,20 +11,6 @@ public class PMPanel extends JPanel implements Runnable {
 		this.fr = fr;
 	}
 
-	public void paint(Graphics g){}
-
-	public void repaint(){
-		//离屏绘制
-		Image im = createImage(getWidth(),getHeight());
-		if(im == null)
-			return;  //特性避免
-		Graphics dbg = im.getGraphics();
-		paint(dbg);
-		Graphics g = getGraphics();
-		g.drawImage(im,0,0,null);
-		g.dispose();
-	}
-
 	public void loop(){}
 
 	public void run(){}

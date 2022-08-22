@@ -20,7 +20,7 @@ public class SelectPanel extends PMPanel{
 		super(fr);
 		this.setBackground(Color.black);
 		setLayout(null);
-		info = new InfoBoxContainer(650,500);
+		info = new InfoBoxContainer(650,300,250,300);
 		songList = new SongList(this,new Point(100,50));
 		Editor.chart = songList.songs.get(songList.index)[0];
 		JButton confirm = new JButton("确认");
@@ -48,7 +48,7 @@ public class SelectPanel extends PMPanel{
 
 	@Override
 	public void paint(Graphics g) {
-		info.draw((Graphics2D) g);
+		info.repaint();
 		songList.draw((Graphics2D) g);
 	}
 

@@ -1,7 +1,5 @@
 package top.alumopper.PMEditor.Component;
 
-import top.alumopper.PMEditor.Animation;
-
 import java.awt.*;
 
 /**

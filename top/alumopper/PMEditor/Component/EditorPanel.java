@@ -25,6 +25,9 @@ public class EditorPanel extends PMPanel implements Runnable {
     public InfoBoxContainer info;   //消息提示框
     public OperationManager opm;    //操作管理器
 
+    public JLabel beat;
+    public JLabel timeDis;
+
     public boolean pressShift = false;
     public boolean pressCtrl = false;
     public boolean pressSpace = false;
@@ -36,14 +39,28 @@ public class EditorPanel extends PMPanel implements Runnable {
     public boolean notSaved = false;
 
     public EditorPanel(Frame fr) throws IOException {
+
         super(fr);
         this.setBackground(Color.black);
         curLine = 0;
         setLayout(null);
+
+        //读谱
         cr = new ChartReader("./res/charts/"+ Editor.chart +"/chart.json");
+        //note编辑
         np = new NotePanel(this);
+        np.setBounds(80,50,440,500);
+        np.setBackground(Color.black);
+        this.add(np);
+        //信息
         ip = new InfoPanel(this);
+        ip.setBounds(120,5,300,40);
+        this.add(ip);
+        //操作历史记录
         opm = new OperationManager(this);
+        //消息提示框
+        info = new InfoBoxContainer(650,250,250,300);
+        this.add(info);
         //进度条
         t = new Scrollbar(Scrollbar.VERTICAL,0,1,0,101);
         t.setLocation(50,50);
@@ -140,56 +157,43 @@ public class EditorPanel extends PMPanel implements Runnable {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Point clickPoint = e.getPoint();
-                if(pointInRect(clickPoint,755,55,825,80)){
-                    //点击了文本框内
-                    ip.tf.setVisible(true);
-                }else{
-                    //点击了文本框外面
-                    ip.tf.setVisible(false);
-                    int qwq = curLine;
-                    try{
-                        curLine = Integer.parseInt(ip.tf.getText());
-                    }catch (NumberFormatException awa){
-                        curLine = qwq;
-                        ip.tf.setText(String.valueOf(curLine));
-                    }
-                }
-                if(pointInRect(clickPoint,80,50,430,550)){
-                    //在note放置区内
-                    if(pressCtrl){
-                        //删除键
-                        delNote();
-                    }else{
-                        //放置
-                        if(e.getButton() == MouseEvent.BUTTON1){
-                            //左键放置tap
-                            noteType = Note.TAP;
-                            putNote();
-                        }else if(e.getButton() == MouseEvent.BUTTON3){
-                            //右键放置drag
-                            noteType = Note.DRAG;
-                            putNote();
-                        }
-                    }
-                    notSaved = true;
-                    fr.setTitle(fr.getTitle() + " *");
+                //点击了文本框外面
+                ip.lineNoTf.setVisible(false);
+                ip.lineNo.setVisible(true);
+                int qwq = curLine;
+                try{
+                    curLine = Integer.parseInt(ip.lineNoTf.getText());
+                }catch (NumberFormatException awa){
+                    curLine = qwq;
+                    ip.lineNoTf.setText(String.valueOf(curLine));
                 }
             }
         });
         time = 0;
-        //消息提示框
-        info = new InfoBoxContainer(650,500);
+        //文字
+        beat = new JLabel("");
+        beat.setBounds(10,0,100,20);
+        beat.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
+        beat.setForeground(Color.white);
+        this.add(beat);
+        timeDis = new JLabel("");
+        timeDis.setBounds(10,20,100,20);
+        timeDis.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
+        timeDis.setForeground(Color.white);
+        this.add(timeDis);
     }
 
-    public void paint(Graphics g){
+    public void draw(){
         //note展示区域
-        np.draw((Graphics2D) g);
-        //信息展示区
-        ip.draw((Graphics2D) g);
+        np.repaint();
+        //信息展示区更新
+        ip.updateLabel();
         //消息框
-        info.draw((Graphics2D) g);
-        //super.paintChildren(g);
+        info.repaint();
+        //更新Label
+        beat.setText("Beat "+np.bar+":"+np.beat+"/"+np.lines);
+        timeDis.setText(String.format("%.2f/%.2f",time,cr.song.songPlayer.getDuration().getSeconds()));
+
     }
 
     public void loop(){
@@ -197,7 +201,7 @@ public class EditorPanel extends PMPanel implements Runnable {
             time = cr.song.songPlayer.getMediaTime().getSeconds();
             t.setValue(100-(int)(time/cr.songTime*100));
         }
-        repaint();
+        draw();
     }
 
     @Override
@@ -214,6 +218,7 @@ public class EditorPanel extends PMPanel implements Runnable {
         Note curr = new Note(np.key,noteTime,noteType);
         if(!cr.addNote(curr,curLine)){
             info.addInfo("放置失败，note重叠",1);
+            return;
         }
         opm.addOp(new PutNote(curr));
     }
@@ -223,6 +228,7 @@ public class EditorPanel extends PMPanel implements Runnable {
         Note curr = new Note(key,time,noteType);
         if(!cr.addNote(curr,curLine)){
             info.addInfo("放置失败，note重叠",1);
+            return;
         }
         opm.addOp(new PutNote(curr));
     }
@@ -230,6 +236,7 @@ public class EditorPanel extends PMPanel implements Runnable {
     public void putNote(Note n){
         if(!cr.addNote(n,curLine)){
             info.addInfo("放置失败，note重叠",1);
+            return;
         }
         opm.addOp(new PutNote(n));
     }
