@@ -2,6 +2,8 @@ package top.alumopper.PMEditor.Component;
 
 import top.alumopper.PMEditor.*;
 
+import javax.media.Controller;
+import javax.media.Time;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -142,9 +144,23 @@ public class NotePanel extends Canvas {
         //渲染note
         for (Line l : ep.cr.lines) {
             for (Note n : l.notes) {
+                //是否被判定
+                if(n.time < ep.time){
+                    if(!n.judged){
+                        n.judged = true;
+                        if(ep.cr.song.songPlayer.getState() == Controller.Started)
+                            n.effect.setMediaTime(new Time(0));
+                            n.effect.start();
+                    }
+                    continue;
+                }
+                n.judged = false;
                 //计算y
                 double noteY = 492 - (n.time- ep.time)*(delPixel/eachTime);
                 if(noteY < 50 || noteY > 492) continue;
+                if((int)noteY == 492){
+
+                }
                 if(n.type == Note.TAP){
                     g.setColor(new Color(90, 210, 229, 255));
                 }else if(n.type == Note.DRAG){

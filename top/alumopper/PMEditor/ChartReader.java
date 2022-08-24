@@ -75,7 +75,7 @@ public class ChartReader {
         Iterator<Object> o = ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").iterator();
         while (o.hasNext()){
             JSONObject curNote = (JSONObject) o.next();
-            if(curNote.getDoubleValue("time") == n.time && curNote.getIntValue("key") == n.key && curNote.getIntValue("type") == n.type){
+            if(curNote.getDoubleValue("time") == n.time && curNote.getIntValue("key") == n.key){
                 o.remove();
             }
         }

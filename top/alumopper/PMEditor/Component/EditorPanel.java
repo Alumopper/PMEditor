@@ -1,8 +1,6 @@
 package top.alumopper.PMEditor.Component;
 
-import top.alumopper.PMEditor.ChartReader;
-import top.alumopper.PMEditor.Editor;
-import top.alumopper.PMEditor.Note;
+import top.alumopper.PMEditor.*;
 import top.alumopper.PMEditor.Operation.DeleteNote;
 import top.alumopper.PMEditor.Operation.OperationManager;
 import top.alumopper.PMEditor.Operation.PutNote;
@@ -220,7 +218,12 @@ public class EditorPanel extends PMPanel implements Runnable {
         //计算note的时间
         double noteTime = np.eachTime*(np.bar+(double)np.beat/np.lines);
         //添加note
-        Note curr = new Note(np.key,noteTime,noteType);
+        Note curr;
+        if(noteType == Note.TAP){
+            curr = new Tap(np.key,noteTime);
+        }else{
+            curr = new Drag(np.key,noteTime);
+        }
         if(!cr.addNote(curr,curLine)){
             info.addInfo("放置失败，note重叠",1);
             return;
@@ -249,7 +252,7 @@ public class EditorPanel extends PMPanel implements Runnable {
     public void delNote(){
         //计算note的时间
         double noteTime = np.eachTime*(np.bar+(double)np.beat/np.lines);
-        //添加note
+        //删除note
         Note curr = new Note(np.key,noteTime,noteType);
         cr.delNote(curr,curLine);
         opm.addOp(new DeleteNote(curr));

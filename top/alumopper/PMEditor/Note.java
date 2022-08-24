@@ -1,5 +1,10 @@
 package top.alumopper.PMEditor;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
+
+import javax.media.Player;
+import javax.media.bean.playerbean.MediaPlayer;
 import java.awt.*;
 import java.util.Objects;
 
@@ -10,6 +15,10 @@ public class Note {
     public int key;
     public double time;
     public int type;
+    @JSONField(serialize = false)
+    public Player effect;   //打击音效
+    @JSONField(serialize = false)
+    public boolean judged;  //已经被判定
 
     public Note(int key, double time, int type) {
         this.key = key;
@@ -53,9 +62,9 @@ public class Note {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
         Note note = (Note) o;
-        return key == note.key && Double.compare(note.time, time) == 0 && type == note.type;
+        return key == note.key && Double.compare(note.time, time) == 0;
     }
 
     @Override
