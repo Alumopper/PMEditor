@@ -1,5 +1,7 @@
 package top.alumopper.PMEditor.Component;
 
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,31 +9,37 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SongList {
+public class SongList extends JPanel {
 
 	public Point loc;
 	public ArrayList<String[]> songs = new ArrayList<>();	//曲目名字
+	public ArrayList<JLabel> songsLabel = new ArrayList<>();
 	public SelectPanel sp;
 	public int index;
 
 	public SongList(SelectPanel sp,Point p){
+		setLayout(null);
 		this.sp = sp;
 		this.loc = p;
+		setBackground(Color.black);
 		chartScan();
 		index = 0;
+		TitledBorder tb = new TitledBorder("谱面列表");
+		tb.setTitleColor(Color.white);
+		tb.setTitleFont(new Font("TsangerYuMo W02",Font.PLAIN,20));
+		this.setBorder(tb);
 	}
 
-	public void draw(Graphics2D g){
-		for(int i = 0;i < songs.size();i ++){
+	public void updateLabel(){
+		//确定所有Label的位置
+		//从顶部开始
+		for (int i = 0; i < songsLabel.size(); i++) {
+			songsLabel.get(i).setBounds(20,(this.getHeight()/2-15)+(i-index)*40,500,30);
+			songsLabel.get(i).setFont(new Font("TsangerYuMo W02",Font.PLAIN,30));
 			if(i == index){
-				g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,35));
-				g.setColor(Color.white);
+				songsLabel.get(i).setForeground(Color.white);
 			}else {
-				g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,28));
-				g.setColor(Color.gray);
-			}
-			if(loc.y+300+40*(i-index) >= loc.y && loc.y+300+40*(i-index) <= loc.y+500){
-				g.drawString(songs.get(i)[0],loc.x+50, loc.y+300);
+				songsLabel.get(i).setForeground(Color.gray);
 			}
 		}
 
@@ -39,6 +47,7 @@ public class SongList {
 
 	public void chartScan(){
 		//扫描曲目
+		songs.clear();
 		File[] files = new File("./res/charts").listFiles();
 		for (File f : files) {
 			if(f.isDirectory()){
@@ -62,6 +71,16 @@ public class SongList {
 					sp.info.addInfo("无效的文件夹",f.getName(),1);
 				}
 			}
+		}
+		for (JLabel j : songsLabel) {
+			remove(j);
+		}
+		songsLabel.clear();
+		for (String[] s : songs) {
+			songsLabel.add(new JLabel(s[0]));
+		}
+		for (JLabel j : songsLabel) {
+			add(j);
 		}
 	}
 }

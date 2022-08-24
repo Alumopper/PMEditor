@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 储存了消息弹窗的一个容器。会在垂直方向上依次绘制其中的弹窗。弹窗之间的垂直间距为5
  */
 public class InfoBoxContainer extends Canvas {
-    private ArrayList<InfoBox> infos;
+    private final ArrayList<InfoBox> infos;
 
     public InfoBoxContainer(Rectangle rec){
         infos = new ArrayList<>();
@@ -23,6 +23,7 @@ public class InfoBoxContainer extends Canvas {
     public void paint(Graphics g){
         //绘制所有的消息弹窗
         update();
+
         if(infos.isEmpty()) return;
         //如果刚刚有新消息加入
         if(infos.get(0).isIn() && infos.size() != 1){

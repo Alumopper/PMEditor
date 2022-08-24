@@ -67,19 +67,11 @@ public class Animation {
 
     public boolean isOut(){
         double curr = System.currentTimeMillis()/1000.0;
-        if(curr - startTime > time){
-            return true;
-        }else {
-            return false;
-        }
+		return curr - startTime > time;
     }
 
     public boolean isIn(){
         double curr = System.currentTimeMillis()/1000.0;
-        if(curr - startTime < inTime){
-            return true;
-        }else {
-            return false;
-        }
+		return curr - startTime < inTime;
     }
 }

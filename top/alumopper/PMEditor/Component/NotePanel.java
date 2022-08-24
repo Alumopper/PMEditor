@@ -45,7 +45,7 @@ public class NotePanel extends Canvas {
                     }
                 }
                 ep.notSaved = true;
-                ep.fr.setTitle(ep.fr.getTitle() + " *");
+                ep.fr.setTitle("PMEditor - " + Editor.chart + " *");
             }
         });
     }

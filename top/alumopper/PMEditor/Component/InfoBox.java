@@ -13,7 +13,7 @@ public class InfoBox extends Animation {
      * 1-黄色
      * 2-红色
      */
-    private int colorType;
+    private final int colorType;
     public static int width = 200;
     public static int height = 40;
     public String text;

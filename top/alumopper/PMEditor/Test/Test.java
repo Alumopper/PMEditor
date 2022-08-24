@@ -32,8 +32,8 @@ public class Test implements Runnable {
 
 class MyPanel extends Panel  {
     private int x;
-    private int y;
-    private int diameter;
+    private final int y;
+    private final int diameter;
 
     public MyPanel() {
         x = 50;

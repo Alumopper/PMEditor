@@ -16,9 +16,9 @@ import java.io.IOException;
 
 public class EditorPanel extends PMPanel implements Runnable {
 
-    private Scrollbar t;
-    private NotePanel np;   //note显示区域
-    private InfoPanel ip;   //信息显示区域
+    private final Scrollbar t;
+    private final NotePanel np;   //note显示区域
+    private final InfoPanel ip;   //信息显示区域
     public ChartReader cr; //读谱器
     public double time;    //时间
     public int curLine;     //当前的判定线
@@ -40,11 +40,14 @@ public class EditorPanel extends PMPanel implements Runnable {
 
     public EditorPanel(Frame fr) throws IOException {
 
+
         super(fr);
         this.setBackground(Color.black);
         curLine = 0;
         setLayout(null);
+        time = 0;
 
+        //UI
         //读谱
         cr = new ChartReader("./res/charts/"+ Editor.chart +"/chart.json");
         //note编辑
@@ -70,6 +73,19 @@ public class EditorPanel extends PMPanel implements Runnable {
             time = (100-t.getValue())* cr.songTime/100;
         });
         this.add(t);
+        //文字
+        beat = new JLabel("");
+        beat.setBounds(10,0,100,20);
+        beat.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
+        beat.setForeground(Color.white);
+        this.add(beat); //节拍
+        timeDis = new JLabel("");
+        timeDis.setBounds(10,20,100,20);
+        timeDis.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
+        timeDis.setForeground(Color.white);
+        this.add(timeDis);  //时间
+
+        //事件
         this.addMouseWheelListener(e -> {
             //滚轮
             if(!pressCtrl && !pressShift){
@@ -122,6 +138,7 @@ public class EditorPanel extends PMPanel implements Runnable {
                                 cr.save();
                                 info.addInfo("保存成功",0);
                                 notSaved = false;
+                                fr.setTitle("PMEditor - " + Editor.chart);
                             }
                         }else{
                             pressS = true;
@@ -169,18 +186,6 @@ public class EditorPanel extends PMPanel implements Runnable {
                 }
             }
         });
-        time = 0;
-        //文字
-        beat = new JLabel("");
-        beat.setBounds(10,0,100,20);
-        beat.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
-        beat.setForeground(Color.white);
-        this.add(beat);
-        timeDis = new JLabel("");
-        timeDis.setBounds(10,20,100,20);
-        timeDis.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
-        timeDis.setForeground(Color.white);
-        this.add(timeDis);
     }
 
     public void draw(){
@@ -190,10 +195,10 @@ public class EditorPanel extends PMPanel implements Runnable {
         ip.updateLabel();
         //消息框
         info.repaint();
-        //更新Label
+
+        //更新自己的Label
         beat.setText("Beat "+np.bar+":"+np.beat+"/"+np.lines);
         timeDis.setText(String.format("%.2f/%.2f",time,cr.song.songPlayer.getDuration().getSeconds()));
-
     }
 
     public void loop(){
