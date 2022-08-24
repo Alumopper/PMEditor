@@ -157,10 +157,7 @@ public class NotePanel extends Canvas {
                 n.judged = false;
                 //计算y
                 double noteY = 492 - (n.time- ep.time)*(delPixel/eachTime);
-                if(noteY < 50 || noteY > 492) continue;
-                if((int)noteY == 492){
-
-                }
+                if(noteY < 0 || noteY > 492) continue;
                 if(n.type == Note.TAP){
                     g.setColor(new Color(90, 210, 229, 255));
                 }else if(n.type == Note.DRAG){

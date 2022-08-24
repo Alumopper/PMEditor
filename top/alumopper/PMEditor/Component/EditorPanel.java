@@ -93,6 +93,8 @@ public class EditorPanel extends PMPanel implements Runnable {
                 if(time > cr.songTime) time = cr.songTime;
                 //进度条
                 t.setValue(100-(int)(time/cr.songTime*100));
+                //强制暂停
+                cr.song.songPlayer.stop();
             }else if(pressCtrl && !pressShift){
                 //调整缩放
                 np.scale += -1*e.getWheelRotation();

@@ -38,12 +38,19 @@ public class ChartReader {
         for (JSONObject line : chart.getJSONArray("lines").toJavaList(JSONObject.class)) {
             Line l = new Line(line.getFloat("speed"));
             for (JSONObject note : line.getJSONArray("notes").toJavaList(JSONObject.class)) {
-                l.notes.add(new Note(
-                        note.getInteger("key"),
-                        note.getDouble("time"),
-                        note.getInteger("type")
-                        )
-                );
+                if(note.getInteger("type") == Note.TAP){
+                    l.notes.add(new Tap(
+                                    note.getInteger("key"),
+                                    note.getDouble("time")
+                            )
+                    );
+                }else{
+                    l.notes.add(new Drag(
+                                    note.getInteger("key"),
+                                    note.getDouble("time")
+                            )
+                    );
+                }
             }
             lines.add(l);
         }
