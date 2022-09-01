@@ -25,10 +25,12 @@ public class EditorPanel extends PMPanel implements Runnable {
 
     public JLabel beat;
     public JLabel timeDis;
+    public JMenuBar menuBar;    //菜单
 
     public boolean pressShift = false;
     public boolean pressCtrl = false;
     public boolean pressSpace = false;
+    public boolean pressN = false;
     public boolean pressS = false;
     public boolean pressY = false;
     public boolean pressZ = false;
@@ -36,7 +38,7 @@ public class EditorPanel extends PMPanel implements Runnable {
     public int noteType = Note.TAP;
     public boolean notSaved = false;
 
-    public EditorPanel(Frame fr) throws IOException {
+    public EditorPanel(JFrame fr) throws IOException {
 
 
         super(fr);
@@ -82,6 +84,30 @@ public class EditorPanel extends PMPanel implements Runnable {
         timeDis.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
         timeDis.setForeground(Color.white);
         this.add(timeDis);  //时间
+
+        //菜单
+        menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("文件");
+            JMenuItem saveFile = new JMenuItem("保存 (Ctrl+S)");
+//            JMenuItem exitWithoutSave = new JMenuItem("不保存退出");
+            fileMenu.add(saveFile);
+//            fileMenu.add(exitWithoutSave);
+        JMenu editMenu = new JMenu("编辑");
+            JMenuItem newLine = new JMenuItem("新建判定线 (Ctrl+N)");
+            editMenu.add(newLine);
+        menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+        //菜单事件
+        saveFile.addActionListener(e -> {
+            //保存
+            save();
+        });
+        newLine.addActionListener(e -> {
+            //新建判定线
+            newLine();
+        });
+        fr.setJMenuBar(menuBar);
+        menuBar.setVisible(true);
 
         //事件
         this.addMouseWheelListener(e -> {
@@ -134,16 +160,25 @@ public class EditorPanel extends PMPanel implements Runnable {
                             pressSpace = true;
                         }
                     }
+                    //N
+                    if(e.getKeyCode() == KeyEvent.VK_N){
+                        if(pressN){
+                            pressN = false;
+                            //保存
+                            if(pressCtrl){
+                                newLine();
+                            }
+                        }else{
+                            pressN = true;
+                        }
+                    }
                     //S
                     if(e.getKeyCode() == KeyEvent.VK_S){
                         if(pressS){
                             pressS = false;
                             //保存
                             if(pressCtrl){
-                                cr.save();
-                                info.addInfo("保存成功",0);
-                                notSaved = false;
-                                fr.setTitle("PMEditor - " + Editor.chart);
+                                save();
                             }
                         }else{
                             pressS = true;
@@ -297,5 +332,19 @@ public class EditorPanel extends PMPanel implements Runnable {
             curLine = qwq;
             ip.lineNoTf.setText(String.valueOf(curLine));
         }
+    }
+
+    public void save(){
+        cr.save();
+        info.addInfo("保存成功",0);
+        notSaved = false;
+        fr.setTitle("PMEditor - " + Editor.chart);
+    }
+
+    public void newLine(){
+            //添加判定线
+            cr.chart.lines.add(new Line(1.0f));
+            curLine = cr.chart.lines.size() - 1;
+            info.addInfo("成功添加新判定线",0);
     }
 }

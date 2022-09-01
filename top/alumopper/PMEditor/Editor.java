@@ -22,7 +22,7 @@ public class Editor implements Runnable {
     public void run() {
         if(qwq.equals("edit")){
             EditorFrame fr = new EditorFrame("PMEditor - "+chart);
-            fr.setSize(900,600);
+            fr.setSize(900,620);
             fr.setBackground(Color.black);
             fr.setLocation(((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()-900)/2,((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()-600)/2);
             fr.setResizable(false);
@@ -46,7 +46,7 @@ public class Editor implements Runnable {
             new Thread(ep).run();
         }else{
             EditorFrame fr = new EditorFrame("PMEditor");
-            fr.setSize(900,600);
+            fr.setSize(900,620);
             fr.setBackground(Color.black);
             fr.setLocation(((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth()-900)/2,((int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()-600)/2);
             fr.setResizable(false);
