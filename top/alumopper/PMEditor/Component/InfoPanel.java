@@ -1,5 +1,7 @@
 package top.alumopper.PMEditor.Component;
 
+import top.alumopper.PMEditor.Line;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -11,6 +13,9 @@ public class InfoPanel extends JPanel {
     public JLabel lineNoL;    //判定线数量
     public JLabel lineNo;    //判定线数量
     public TextField lineNoTf;  //判定线数量编辑用文本框
+    public JButton addLineButton;
+
+    public boolean onLineNo = false;
 
     public InfoPanel(EditorPanel ep){
         this.ep = ep;
@@ -29,9 +34,23 @@ public class InfoPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                lineNoTf.setText(String.valueOf(ep.curLine));
                 lineNoTf.setVisible(true);
                 lineNo.setVisible(false);
             }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                onLineNo = true;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                onLineNo = false;
+            }
+
         });
         lineNo.setBounds(60,0,40,20);
         lineNo.setForeground(Color.white);
@@ -46,19 +65,16 @@ public class InfoPanel extends JPanel {
         lineNoTf.setVisible(false);
         lineNoTf.setBounds(60,0,40,20);
         add(lineNoTf);
-    }
-
-    public void draw(Graphics2D g){
-//        //判定线数
-//        g.setColor(Color.WHITE);
-//        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,20));
-//        g.drawString("判定线：",700,75);
-//        if(!lineNoTf.isVisible()){
-//            g.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
-//            g.drawString(String.valueOf(ep.curLine),775,73);
-//        }
-//        //拍数
+//        addLineButton = new JButton("新建");
+//        addLineButton.setFont(f);
+//        addLineButton.setBackground(new Color(83, 183, 134, 255));
+//        addLineButton.setBounds(110,0,70,20);
+//        addLineButton.addActionListener(e -> {
+//            //添加判定线
+//            ep.cr.chart.lines.add(new Line(1.0f));
+//            ep.curLine = ep.cr.chart.lines.size() - 1;
+//        });
+//        add(addLineButton);
     }
 
     public void updateLabel(){

@@ -142,7 +142,8 @@ public class NotePanel extends Canvas {
         this.bar = bar;
         this.beat = beat;
         //渲染note
-        for (Line l : ep.cr.lines) {
+        for (int i = 0;i < ep.cr.chart.lines.size();i ++) {
+            Line l = ep.cr.chart.lines.get(i);
             for (Note n : l.notes) {
                 //是否被判定
                 if(n.time < ep.time){
@@ -158,10 +159,11 @@ public class NotePanel extends Canvas {
                 //计算y
                 double noteY = 492 - (n.time- ep.time)*(delPixel/eachTime);
                 if(noteY < 0 || noteY > 492) continue;
+                int alpha = i==ep.curLine ? 255:100;
                 if(n.type == Note.TAP){
-                    g.setColor(new Color(90, 210, 229, 255));
+                    g.setColor(new Color(90, 210, 229, alpha));
                 }else if(n.type == Note.DRAG){
-                    g.setColor(new Color(243, 241, 33, 255));
+                    g.setColor(new Color(243, 241, 33, alpha));
                 }
                 g.fillRect(n.key*40,(int)Math.round(noteY),40,8);
             }

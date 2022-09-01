@@ -55,7 +55,7 @@ public class EditorPanel extends PMPanel implements Runnable {
         this.add(np);
         //信息
         ip = new InfoPanel(this);
-        ip.setBounds(120,5,300,40);
+        ip.setBounds(140,5,300,40);
         this.add(ip);
         //操作历史记录
         opm = new OperationManager(this);
@@ -68,17 +68,17 @@ public class EditorPanel extends PMPanel implements Runnable {
         t.setSize(20,500);
         t.addAdjustmentListener(e -> {
             //进度条被拖动
-            time = (100-t.getValue())* cr.songTime/100;
+            time = (100-t.getValue())* cr.chart.song.time/100;
         });
         this.add(t);
         //文字
         beat = new JLabel("");
-        beat.setBounds(10,0,100,20);
+        beat.setBounds(10,0,120,20);
         beat.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
         beat.setForeground(Color.white);
         this.add(beat); //节拍
         timeDis = new JLabel("");
-        timeDis.setBounds(10,20,100,20);
+        timeDis.setBounds(10,20,120,20);
         timeDis.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
         timeDis.setForeground(Color.white);
         this.add(timeDis);  //时间
@@ -87,14 +87,19 @@ public class EditorPanel extends PMPanel implements Runnable {
         this.addMouseWheelListener(e -> {
             //滚轮
             if(!pressCtrl && !pressShift){
-                //设置时间
-                time += -1*e.getWheelRotation()* np.eachTime/4;
-                if(time < 0.0) time = 0;
-                if(time > cr.songTime) time = cr.songTime;
-                //进度条
-                t.setValue(100-(int)(time/cr.songTime*100));
-                //强制暂停
-                cr.song.songPlayer.stop();
+                if(ip.onLineNo){
+                    //调整判定线序号
+                    setCurLine(curLine + e.getWheelRotation());
+                }else{
+                    //设置时间
+                    time += -1*e.getWheelRotation()* np.eachTime/4;
+                    if(time < 0.0) time = 0;
+                    if(time > cr.chart.song.time) time = cr.chart.song.time;
+                    //进度条
+                    t.setValue(100-(int)(time/cr.chart.song.time*100));
+                    //强制暂停
+                    cr.song.songPlayer.stop();
+                }
             }else if(pressCtrl && !pressShift){
                 //调整缩放
                 np.scale += -1*e.getWheelRotation();
@@ -177,13 +182,7 @@ public class EditorPanel extends PMPanel implements Runnable {
                 //点击了文本框外面
                 ip.lineNoTf.setVisible(false);
                 ip.lineNo.setVisible(true);
-                int qwq = curLine;
-                try{
-                    curLine = Integer.parseInt(ip.lineNoTf.getText());
-                }catch (NumberFormatException awa){
-                    curLine = qwq;
-                    ip.lineNoTf.setText(String.valueOf(curLine));
-                }
+                setCurLine(ip.lineNoTf.getText());
             }
         });
     }
@@ -204,7 +203,7 @@ public class EditorPanel extends PMPanel implements Runnable {
     public void loop(){
         if(cr.song.songPlayer.getState() == Player.Started){
             time = cr.song.songPlayer.getMediaTime().getSeconds();
-            t.setValue(100-(int)(time/cr.songTime*100));
+            t.setValue(100-(int)(time/cr.chart.song.time*100));
         }
         draw();
     }
@@ -272,4 +271,31 @@ public class EditorPanel extends PMPanel implements Runnable {
         opm.addOp(new DeleteNote(n));
     }
 
+    public void setCurLine(int l){
+        int qwq = curLine;
+        curLine = l;
+        try{
+            if(curLine > cr.chart.lines.size()-1 || curLine < 0){
+                //超出范围
+                throw new NumberFormatException();
+            }
+        }catch (NumberFormatException awa){
+            curLine = qwq;
+            ip.lineNoTf.setText(String.valueOf(curLine));
+        }
+    }
+
+    public void setCurLine(String l){
+        int qwq = curLine;
+        try{
+            curLine = Integer.parseInt(l);
+            if(curLine > cr.chart.lines.size()-1 || curLine < 0){
+                //超出范围
+                throw new NumberFormatException();
+            }
+        }catch (NumberFormatException awa){
+            curLine = qwq;
+            ip.lineNoTf.setText(String.valueOf(curLine));
+        }
+    }
 }

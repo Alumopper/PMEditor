@@ -3,9 +3,14 @@ package top.alumopper.PMEditor;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
 
+import javax.media.CannotRealizeException;
+import javax.media.Manager;
+import javax.media.NoPlayerException;
 import javax.media.Player;
 import javax.media.bean.playerbean.MediaPlayer;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 public class Note {
@@ -32,8 +37,6 @@ public class Note {
     }
 
     public Note(){}
-
-    public void draw(Graphics2D g) {}
 
     public int getKey() {
         return key;
