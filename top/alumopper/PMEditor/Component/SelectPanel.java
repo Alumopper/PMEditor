@@ -50,6 +50,7 @@ public class SelectPanel extends PMPanel{
 				fr.dispose();
 			}
 		});
+		confirm.setFocusable(false);
 		this.add(confirm);
 		JButton addchart = new JButton("创建谱面");
 		addchart.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
@@ -130,6 +131,7 @@ public class SelectPanel extends PMPanel{
 				}
 			}
 		});
+		addchart.setFocusable(false);
 		this.add(addchart);
 		this.addMouseWheelListener(e -> {
 			//滚轮

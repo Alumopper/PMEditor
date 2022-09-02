@@ -29,6 +29,7 @@ public class EditorFrame extends JFrame {
 		if(sp == null && e.getID() == WindowEvent.WINDOW_CLOSING){
 			//为editor
 			try {
+				ep.cr.song.songPlayer.close();
 				Editor.main(new String[]{"qwq"});
 			} catch (IOException ex) {
 				ex.printStackTrace();
