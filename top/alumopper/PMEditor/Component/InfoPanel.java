@@ -1,7 +1,5 @@
 package top.alumopper.PMEditor.Component;
 
-import top.alumopper.PMEditor.Line;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -9,12 +7,12 @@ import java.awt.event.MouseEvent;
 
 public class InfoPanel extends JPanel {
 
-    public EditorPanel ep;
-    public JLabel lineNoL;    //判定线数量
-    public JLabel lineNo;    //判定线数量
+    public final EditorPanel ep;
+    public final JLabel lineNoL;    //判定线数量
+    public final JLabel lineNo;    //判定线数量
     public TextField lineNoTf;  //判定线数量编辑用文本框
-    public JLabel playRateL;    //播放速度
-    public JLabel playRate;    //播放速度
+    public final JLabel playRateL;    //播放速度
+    public final JLabel playRate;    //播放速度
     public TextField playRateTF;  //播放速度编辑用文本框
 //    public JButton addLineButton;
 

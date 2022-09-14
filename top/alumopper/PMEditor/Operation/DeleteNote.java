@@ -5,7 +5,7 @@ import top.alumopper.PMEditor.Component.EditorPanel;
 
 public class DeleteNote extends Operation {
     //删除了一个键
-    Note n;
+    final Note n;
 
     public DeleteNote(Note n){
         this.n = n;

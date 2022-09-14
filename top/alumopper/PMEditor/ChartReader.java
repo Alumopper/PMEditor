@@ -1,7 +1,6 @@
 package top.alumopper.PMEditor;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
@@ -10,7 +9,6 @@ import javax.media.Manager;
 import javax.media.NoPlayerException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -28,16 +26,16 @@ public class ChartReader {
     /**
      * 谱面文件
      */
-    public File chartFile;      //谱面文件
+    public final File chartFile;      //谱面文件
 
     /**
      * 创建一个读谱器
      * @param s 谱面文件的路径
-     * @throws IOException
+     * @throws IOException 如果出现io异常
      */
     public ChartReader(String s) throws IOException {
         //读取谱面
-        String content = "";
+        String content;
         StringBuilder builder = new StringBuilder();
 
         File file = new File(s);
@@ -58,9 +56,7 @@ public class ChartReader {
                     n.effect = Manager.createRealizedPlayer(new File("res/media/tap.wav").toURI().toURL());
                 }
             }
-        } catch (NoPlayerException e) {
-            e.printStackTrace();
-        } catch (CannotRealizeException e) {
+        } catch (NoPlayerException | CannotRealizeException e) {
             e.printStackTrace();
         }
 
@@ -71,7 +67,7 @@ public class ChartReader {
      * 向指定判定线添加一个note。note不可重叠
      * @param n 一个note
      * @param lineNo 判定线编号
-     * @return
+     * @return 若note成功添加，返回true
      */
     public boolean addNote(Note n, int lineNo){
         for (Note qwq: chart.lines.get(lineNo).notes ) {
@@ -99,13 +95,7 @@ public class ChartReader {
 //            }
 //        }
         //数列去除
-        Iterator<Note> qwq = chart.lines.get(lineNo).notes.iterator();
-        while (qwq.hasNext()){
-            Note curNote = qwq.next();
-            if(curNote.equals(n)){
-                qwq.remove();
-            }
-        }
+        chart.lines.get(lineNo).notes.removeIf(curNote -> curNote.equals(n));
     }
 
     /**

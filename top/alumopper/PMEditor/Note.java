@@ -1,16 +1,8 @@
 package top.alumopper.PMEditor;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
 
-import javax.media.CannotRealizeException;
-import javax.media.Manager;
-import javax.media.NoPlayerException;
 import javax.media.Player;
-import javax.media.bean.playerbean.MediaPlayer;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -98,12 +90,10 @@ public class Note {
      * @param o 被比较的note
      * @return 若相同则返回true
      */
-    @Override
-    public boolean equals(Object o) {
+    public boolean equals(Note o) {
         if (this == o) return true;
         if (o == null) return false;
-        Note note = (Note) o;
-        return key == note.key && Double.compare(note.time, time) == 0;
+        return key == o.key && Double.compare(o.time, time) == 0;
     }
 
     @Override
@@ -118,9 +108,7 @@ public class Note {
      */
     public boolean isIllegalTap(){
         if(this.type == TAP){
-            if (this.key % 2 != 0){
-                return true;
-            }
+            return this.key % 2 != 0;
         }
         return false;
     }

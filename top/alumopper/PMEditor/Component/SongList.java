@@ -11,10 +11,10 @@ import java.util.Scanner;
 
 public class SongList extends JPanel {
 
-	public Point loc;
-	public ArrayList<String[]> songs = new ArrayList<>();	//曲目名字
-	public ArrayList<JLabel> songsLabel = new ArrayList<>();
-	public SelectPanel sp;
+	public final Point loc;
+	public final ArrayList<String[]> songs = new ArrayList<>();	//曲目名字
+	public final ArrayList<JLabel> songsLabel = new ArrayList<>();
+	public final SelectPanel sp;
 	public int index;
 
 	public SongList(SelectPanel sp,Point p){
@@ -49,6 +49,7 @@ public class SongList extends JPanel {
 		//扫描曲目
 		songs.clear();
 		File[] files = new File("./res/charts").listFiles();
+		assert files != null;
 		for (File f : files) {
 			if(f.isDirectory()){
 				File info = new File(f.getPath()+"/info.txt");

@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class PMPanel extends JPanel implements Runnable {
 
-	public Frame fr;
+	public final Frame fr;
 
 	public PMPanel(Frame fr){
 		this.fr = fr;

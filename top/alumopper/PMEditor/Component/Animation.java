@@ -11,23 +11,23 @@ public class Animation {
     /**
      * 以秒为单位，表示动画的时间轴的起点
      */
-    public double startTime;
+    public final double startTime;
     /**
      * 总时间
      */
-    public double time;
+    public final double time;
     /**
      * 渐进时间
      */
-    public double inTime;
+    public final double inTime;
     /**
      * 渐出时间
      */
-    public double outTime;
+    public final double outTime;
     /**
      * 稳定时间
      */
-    public double durTime;
+    public final double durTime;
     /**
      * 动画渲染的位置
      */

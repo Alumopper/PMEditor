@@ -166,7 +166,7 @@ public class EditorPanel extends PMPanel implements Runnable {
                     if(e.getKeyCode() == KeyEvent.VK_N){
                         if(pressN){
                             pressN = false;
-                            //保存
+                            //新建判定线
                             if(pressCtrl){
                                 newLine();
                             }
@@ -181,6 +181,7 @@ public class EditorPanel extends PMPanel implements Runnable {
                             //保存
                             if(pressCtrl){
                                 save();
+                                opm.save();
                             }
                         }else{
                             pressS = true;
@@ -239,6 +240,9 @@ public class EditorPanel extends PMPanel implements Runnable {
         //更新自己的Label
         beat.setText("Beat "+np.bar+":"+np.beat+"/"+np.lines);
         timeDis.setText(String.format("%.2f/%.2f",time,cr.song.songPlayer.getDuration().getSeconds()));
+
+        //更新frame标题
+        fr.setTitle("PMEditor - " + Editor.chart + (opm.isChanged() ? " *" :""));
     }
 
     public void loop(){

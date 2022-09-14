@@ -21,11 +21,7 @@ public class Drag extends Note {
         try {
             effect = Manager.createRealizedPlayer(new File("./res/media/drag.wav").toURI().toURL());
             effect.prefetch();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoPlayerException e) {
-            e.printStackTrace();
-        } catch (CannotRealizeException e) {
+        } catch (IOException | NoPlayerException | CannotRealizeException e) {
             e.printStackTrace();
         }
     }

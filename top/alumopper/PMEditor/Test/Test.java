@@ -1,7 +1,5 @@
 package top.alumopper.PMEditor.Test;
 
-import top.alumopper.PMEditor.Editor;
-
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

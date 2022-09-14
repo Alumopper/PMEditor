@@ -5,7 +5,7 @@ import top.alumopper.PMEditor.Note;
 
 public class PutNote extends Operation {
 	//放置了一个键
-	Note n;
+	final Note n;
 
 	public PutNote(Note n){
 		this.n = n;

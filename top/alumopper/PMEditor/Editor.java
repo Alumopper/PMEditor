@@ -5,7 +5,6 @@ import top.alumopper.PMEditor.Component.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -24,7 +23,8 @@ public class Editor implements Runnable {
      */
     private static String qwq;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        System.setProperty("sun.java2d.opengl","true");
         qwq = args[0];
         new Thread(new Editor()).start();
     }
@@ -57,7 +57,7 @@ public class Editor implements Runnable {
                         }
                     }
             );
-            new Thread(ep).run();
+            new Thread(ep).start();
         }else{
             EditorFrame fr = new EditorFrame("PMEditor");
             fr.setSize(900,620);
@@ -66,7 +66,7 @@ public class Editor implements Runnable {
             fr.setResizable(false);
             SelectPanel sp = new SelectPanel(fr);
             fr.addSp(sp);
-            fr.setIconImage(new ImageIcon("./res/icon.png").getImage());
+            fr.setIconImage(new ImageIcon("./res/icon.ico").getImage());
             fr.setVisible(true);
             fr.addWindowListener(
                     new WindowAdapter() {
@@ -76,7 +76,7 @@ public class Editor implements Runnable {
                         }
                     }
             );
-            new Thread(sp).run();
+            new Thread(sp).start();
         }
     }
 }

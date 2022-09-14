@@ -19,7 +19,7 @@ public class NotePanel extends Canvas {
     public int beat;        //鼠标对应的拍数
     public int key;         //鼠标对应的列数
 
-    public EditorPanel ep;
+    public final EditorPanel ep;
 
     public NotePanel(EditorPanel ep){
         this.ep = ep;

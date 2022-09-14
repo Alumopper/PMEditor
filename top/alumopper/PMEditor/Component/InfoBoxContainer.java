@@ -32,15 +32,13 @@ public class InfoBoxContainer extends Canvas {
             infos.get(0).draw((Graphics2D) g);
             //整体向上平移
             for (int i = 1; i < infos.size(); i++) {
-                Point curPos = new Point(0,(getHeight()-InfoBox.height-(int)(((System.currentTimeMillis()/1000.0-infos.get(0).startTime)/infos.get(0).inTime+i-1)*(InfoBox.height+5))));
-                infos.get(i).aniPos = curPos;
+                infos.get(i).aniPos = new Point(0,(getHeight()-InfoBox.height-(int)(((System.currentTimeMillis()/1000.0-infos.get(0).startTime)/infos.get(0).inTime+i-1)*(InfoBox.height+5))));
                 infos.get(i).draw((Graphics2D) g);
             }
         }else{
             for (int i = 0; i < infos.size(); i++) {
                 //依次绘制
-                Point curPos = new Point(0, getHeight()-i*(InfoBox.height+5)-InfoBox.height);
-                infos.get(i).aniPos = curPos;
+                infos.get(i).aniPos = new Point(0, getHeight()-i*(InfoBox.height+5)-InfoBox.height);
                 infos.get(i).draw((Graphics2D) g);
             }
         }
@@ -59,6 +57,7 @@ public class InfoBoxContainer extends Canvas {
         for (int i = 0; i < infos.size(); i++) {
             if(infos.get(i).isOut()){
                 infos.remove(i);
+                i --;
             }
         }
     }

@@ -5,14 +5,16 @@ import top.alumopper.PMEditor.Component.EditorPanel;
 import java.util.ArrayList;
 
 public class OperationManager {
-    ArrayList<Operation> opHistory;     //历史操作
+    final ArrayList<Operation> opHistory;     //历史操作
     private int index;                  //操作步骤索引
-    EditorPanel ep;                     //编辑器
+    final EditorPanel ep;                     //编辑器
+    private int orgIndex;               //未修改处的操作步骤索引
 
     public OperationManager(EditorPanel ep){
         this.ep = ep;
         opHistory = new ArrayList<>();
         index = -1;
+        orgIndex = index;
     }
 
     public void addOp(Operation o){
@@ -42,5 +44,13 @@ public class OperationManager {
         }else {
             ep.info.addInfo("无更多操作可撤销",1);
         }
+    }
+
+    public boolean isChanged(){
+        return orgIndex != index;
+    }
+
+    public void save(){
+        orgIndex = index;
     }
 }

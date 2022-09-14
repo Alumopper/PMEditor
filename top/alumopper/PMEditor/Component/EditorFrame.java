@@ -32,7 +32,7 @@ public class EditorFrame extends JFrame {
 
 	/**
 	 * 向此窗口添加一个编辑器
-	 * @param ep
+	 * @param ep 一个编辑器
 	 */
 	public void addEp(EditorPanel ep){
 		this.add(ep);
@@ -41,7 +41,7 @@ public class EditorFrame extends JFrame {
 
 	/**
 	 * 向此窗口添加一个选曲器
-	 * @param sp
+	 * @param sp 一个选曲器
 	 */
 	public void addSp(SelectPanel sp){
 		this.add(sp);
@@ -52,12 +52,8 @@ public class EditorFrame extends JFrame {
 	protected void processWindowEvent(WindowEvent e){
 		if(sp == null && e.getID() == WindowEvent.WINDOW_CLOSING){
 			//为editor
-			try {
-				ep.cr.song.songPlayer.close();
-				Editor.main(new String[]{"qwq"});
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			ep.cr.song.songPlayer.close();
+			Editor.main(new String[]{"qwq"});
 			this.dispose();
 		}else {
 			super.processWindowEvent(e);

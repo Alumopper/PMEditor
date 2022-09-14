@@ -16,10 +16,8 @@ public class Chart {
 		public String name;
 		/**
 		 * wav文件的长度<br>
-		 * 曲目长度的读取直接由{@link ChartReader}读取
-		 * @deprecated
+		 * 曲目长度的读取直接由{@link ChartReader}读取并储存在此
 		 */
-		@Deprecated
 		public float time;
 		/**
 		 * 曲目的bpm
