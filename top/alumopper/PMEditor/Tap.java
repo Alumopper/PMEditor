@@ -6,8 +6,16 @@ import javax.media.NoPlayerException;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * tap，即蓝键
+ */
 public class Tap extends Note{
 
+    /**
+     * 创建一个tap
+     * @param key 轨道序号
+     * @param time note被击打的时间
+     */
     public Tap(int key, double time) {
         super(key, time, Note.TAP);
         try {

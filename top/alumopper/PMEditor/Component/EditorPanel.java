@@ -20,6 +20,7 @@ public class EditorPanel extends PMPanel implements Runnable {
     public ChartReader cr; //读谱器
     public double time;    //时间
     public int curLine;     //当前的判定线
+    public float curRate = 1.0f;    //当前播放速度
     public InfoBoxContainer info;   //消息提示框
     public OperationManager opm;    //操作管理器
 
@@ -115,7 +116,7 @@ public class EditorPanel extends PMPanel implements Runnable {
             if(!pressCtrl && !pressShift){
                 if(ip.onLineNo){
                     //调整判定线序号
-                    setCurLine(curLine + e.getWheelRotation());
+                    setCurLine(curLine + -1*e.getWheelRotation());
                 }else{
                     //设置时间
                     time += -1*e.getWheelRotation()* np.eachTime/4;
@@ -151,6 +152,7 @@ public class EditorPanel extends PMPanel implements Runnable {
                             pressSpace = false;
                             //播放
                             if(cr.song.songPlayer.getState() != Player.Started){
+                                cr.song.songPlayer.setRate(curRate);
                                 cr.song.songPlayer.setMediaTime(new Time(time));
                                 cr.song.songPlayer.start();
                             }else{
@@ -218,6 +220,10 @@ public class EditorPanel extends PMPanel implements Runnable {
                 ip.lineNoTf.setVisible(false);
                 ip.lineNo.setVisible(true);
                 setCurLine(ip.lineNoTf.getText());
+                ip.playRateTF.setVisible(false);
+                ip.playRate.setVisible(true);
+                setRate(ip.playRateTF.getText());
+                cr.song.songPlayer.setRate(curRate);
             }
         });
     }
@@ -259,6 +265,10 @@ public class EditorPanel extends PMPanel implements Runnable {
             curr = new Tap(np.key,noteTime);
         }else{
             curr = new Drag(np.key,noteTime);
+        }
+        if(curr.isIllegalTap()){
+            //如果是非法tap，替换为drag
+            curr.type = Note.DRAG;
         }
         if(!cr.addNote(curr,curLine)){
             info.addInfo("放置失败，note重叠",1);
@@ -346,5 +356,19 @@ public class EditorPanel extends PMPanel implements Runnable {
             cr.chart.lines.add(new Line(1.0f));
             curLine = cr.chart.lines.size() - 1;
             info.addInfo("成功添加新判定线",0);
+    }
+
+    public void setRate(String l){
+        float qwq = curRate;
+        try{
+            curRate = Float.parseFloat(l);
+            if(curRate > 10.0 || curLine < 0){
+                //超出范围
+                throw new NumberFormatException();
+            }
+        }catch (NumberFormatException awa){
+            curRate = qwq;
+            ip.playRateTF.setText(String.valueOf(curRate));
+        }
     }
 }

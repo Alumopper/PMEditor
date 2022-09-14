@@ -6,19 +6,43 @@ import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+/**
+ * 制谱器窗口
+ * @see EditorPanel
+ * @see SelectPanel
+ */
 public class EditorFrame extends JFrame {
 
+	/**
+	 * 一个编辑器面板
+	 */
 	EditorPanel ep;
+	/**
+	 * 一个选曲页面面板
+	 */
 	SelectPanel sp;
 
+	/**
+	 * 创建一个空的指定标题的窗口
+	 * @param s 窗口标题
+	 */
 	public EditorFrame(String s){
 		super(s);
 	}
 
+	/**
+	 * 向此窗口添加一个编辑器
+	 * @param ep
+	 */
 	public void addEp(EditorPanel ep){
 		this.add(ep);
 		this.ep = ep;
 	}
+
+	/**
+	 * 向此窗口添加一个选曲器
+	 * @param sp
+	 */
 	public void addSp(SelectPanel sp){
 		this.add(sp);
 		this.sp = sp;

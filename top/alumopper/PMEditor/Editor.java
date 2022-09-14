@@ -8,9 +8,20 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * 制谱器主类，包含了main方法
+ */
 public class Editor implements Runnable {
 
+    /**
+     * 当前编辑器选定的谱面
+     */
     public static String chart;   //选定的谱面
+    /**
+     * 传入main函数的参数值
+     * edit - 编辑器
+     * 其他 - 选曲界面
+     */
     private static String qwq;
 
     public static void main(String[] args) throws IOException {
@@ -18,6 +29,9 @@ public class Editor implements Runnable {
         new Thread(new Editor()).start();
     }
 
+    /**
+     * 开启一个新的线程，根据qwq字段确定打开的窗口
+     */
     @Override
     public void run() {
         if(qwq.equals("edit")){

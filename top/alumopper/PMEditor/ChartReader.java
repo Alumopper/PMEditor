@@ -13,11 +13,28 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * 读取谱面的Json文件
+ */
 public class ChartReader {
-    public Song song;           //曲子
-    public Chart chart;    //谱面数据
+    /**
+     * 音频
+     */
+    public Song song;
+    /**
+     * 谱面数据
+     */
+    public Chart chart;
+    /**
+     * 谱面文件
+     */
     public File chartFile;      //谱面文件
 
+    /**
+     * 创建一个读谱器
+     * @param s 谱面文件的路径
+     * @throws IOException
+     */
     public ChartReader(String s) throws IOException {
         //读取谱面
         String content = "";
@@ -50,6 +67,12 @@ public class ChartReader {
         this.chart.song.time = (float)((song.songPlayer.getDuration().getSeconds()*100)/100.0);
     }
 
+    /**
+     * 向指定判定线添加一个note。note不可重叠
+     * @param n 一个note
+     * @param lineNo 判定线编号
+     * @return
+     */
     public boolean addNote(Note n, int lineNo){
         for (Note qwq: chart.lines.get(lineNo).notes ) {
             if(qwq.equals(n)){
@@ -61,6 +84,11 @@ public class ChartReader {
         return true;
     }
 
+    /**
+     * 从指定的判定线删除指定的note。
+     * @param n 要被删除的note。判定线中与之相同的note将被删除
+     * @param lineNo 判定线编号
+     */
     public void delNote(Note n, int lineNo){
         //JSON去除
 //        Iterator<Object> o = ((JSONObject)chart.getJSONArray("lines").get(lineNo)).getJSONArray("notes").iterator();
@@ -80,6 +108,9 @@ public class ChartReader {
         }
     }
 
+    /**
+     * 保存谱面文件
+     */
     public void save(){
         //保存
         FileWriter f;

@@ -5,6 +5,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * 编辑器用的按钮
+ * @deprecated 此方案未被采用
+ */
+@Deprecated
 public class EditorButton extends JButton {
 
 	private final Color c1;	//鼠标放上去前

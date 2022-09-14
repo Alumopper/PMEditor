@@ -13,7 +13,10 @@ public class InfoPanel extends JPanel {
     public JLabel lineNoL;    //判定线数量
     public JLabel lineNo;    //判定线数量
     public TextField lineNoTf;  //判定线数量编辑用文本框
-    public JButton addLineButton;
+    public JLabel playRateL;    //播放速度
+    public JLabel playRate;    //播放速度
+    public TextField playRateTF;  //播放速度编辑用文本框
+//    public JButton addLineButton;
 
     public boolean onLineNo = false;
 
@@ -65,6 +68,35 @@ public class InfoPanel extends JPanel {
         lineNoTf.setVisible(false);
         lineNoTf.setBounds(60,0,40,20);
         add(lineNoTf);
+        //谱面播放速度
+        playRateL = new JLabel("速度：");
+        playRateL.setFont(f);
+        playRateL.setBounds(0,20,60,20);
+        playRateL.setForeground(Color.white);
+        add(playRateL);
+        playRate = new JLabel("");
+        playRate.setFont(f);
+        playRate.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                playRateTF.setText(String.valueOf(ep.curRate));
+                playRateTF.setVisible(true);
+                playRate.setVisible(false);
+            }
+
+        });
+        playRate.setBounds(60,20,40,20);
+        playRate.setForeground(Color.white);
+        add(playRate);
+        playRateTF = new TextField();
+        playRateTF.setFont(f);
+        playRateTF.setBackground(Color.black);
+        playRateTF.setForeground(Color.white);
+        playRateTF.setText("1.0");
+        playRateTF.setVisible(false);
+        playRateTF.setBounds(60,20,40,20);
+        add(playRateTF);
 //        addLineButton = new JButton("新建");
 //        addLineButton.setFont(f);
 //        addLineButton.setBackground(new Color(83, 183, 134, 255));
@@ -79,5 +111,6 @@ public class InfoPanel extends JPanel {
 
     public void updateLabel(){
         lineNo.setText(String.valueOf(ep.curLine));
+        playRate.setText(String.valueOf(ep.curRate));
     }
 }
