@@ -95,7 +95,11 @@ public class EditorPanel extends PMPanel implements Runnable {
 //            fileMenu.add(exitWithoutSave);
         JMenu editMenu = new JMenu("编辑");
             JMenuItem newLine = new JMenuItem("新建判定线 (Ctrl+N)");
+            JMenuItem revoke = new JMenuItem("撤销 (Ctrl+Z)");
+            JMenuItem redo = new JMenuItem("重做 (Ctrl+Y)");
             editMenu.add(newLine);
+            editMenu.add(revoke);
+            editMenu.add(redo);
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
         //菜单事件

@@ -52,15 +52,15 @@ public class EditorFrame extends JFrame {
 	protected void processWindowEvent(WindowEvent e){
 		if(sp == null && e.getID() == WindowEvent.WINDOW_CLOSING){
 			//为editor
-			ep.cr.song.songPlayer.close();
-			Editor.main(new String[]{"qwq"});
-			this.dispose();
+			if(ep.opm.isChanged() && !ep.pressCtrl){
+				ep.info.addInfo("更改未保存！更改将丢失","按ctrl强行关闭",1);
+			}else{
+				ep.cr.song.songPlayer.close();
+				Editor.main(new String[]{"qwq"});
+				this.dispose();
+			}
 		}else {
 			super.processWindowEvent(e);
 		}
-//		if(ep.notSaved && !ep.pressCtrl && e.getID() == WindowEvent.WINDOW_CLOSING){
-//			ep.info.addInfo("更改未保存！更改将丢失","按住ctrl强行关闭",1);
-//		}else{
-//		}
 	}
 }
