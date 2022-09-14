@@ -239,7 +239,7 @@ public class EditorPanel extends PMPanel implements Runnable {
         //信息展示区更新
         ip.updateLabel();
         //消息框
-        info.repaint();
+        info.update();
 
         //更新自己的Label
         beat.setText("Beat "+np.bar+":"+np.beat+"/"+np.lines);

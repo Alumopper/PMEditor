@@ -1,5 +1,7 @@
 package top.alumopper.PMEditor.Component;
 
+import top.alumopper.PMEditor.Editor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -23,14 +25,13 @@ public class InfoPanel extends JPanel {
         this.setLayout(null);
         this.setBackground(Color.black);
         this.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255,255)));
-        Font f = new Font("TsangerYuMo W02",Font.PLAIN,15);
         lineNoL = new JLabel("判定线：");
-        lineNoL.setFont(f);
+        lineNoL.setFont(Editor.f);
         lineNoL.setBounds(0,0,60,20);
         lineNoL.setForeground(Color.white);
         add(lineNoL);
         lineNo = new JLabel("");
-        lineNo.setFont(f);
+        lineNo.setFont(Editor.f);
         lineNo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -57,7 +58,7 @@ public class InfoPanel extends JPanel {
         lineNo.setForeground(Color.white);
         add(lineNo);
         lineNoTf = new TextField();
-        lineNoTf.setFont(f);
+        lineNoTf.setFont(Editor.f);
         lineNoTf.setBackground(Color.black);
         lineNoTf.setForeground(Color.white);
         lineNoTf.setLocation(775,55);
@@ -68,12 +69,12 @@ public class InfoPanel extends JPanel {
         add(lineNoTf);
         //谱面播放速度
         playRateL = new JLabel("速度：");
-        playRateL.setFont(f);
+        playRateL.setFont(Editor.f);
         playRateL.setBounds(0,20,60,20);
         playRateL.setForeground(Color.white);
         add(playRateL);
         playRate = new JLabel("");
-        playRate.setFont(f);
+        playRate.setFont(Editor.f);
         playRate.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -88,7 +89,7 @@ public class InfoPanel extends JPanel {
         playRate.setForeground(Color.white);
         add(playRate);
         playRateTF = new TextField();
-        playRateTF.setFont(f);
+        playRateTF.setFont(Editor.f);
         playRateTF.setBackground(Color.black);
         playRateTF.setForeground(Color.white);
         playRateTF.setText("1.0");

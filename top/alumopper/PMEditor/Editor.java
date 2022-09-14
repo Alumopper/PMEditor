@@ -22,6 +22,7 @@ public class Editor implements Runnable {
      * 其他 - 选曲界面
      */
     private static String qwq;
+    public final static Font f = new Font("TsangerYuMo W02",Font.PLAIN,15);
 
     public static void main(String[] args) {
         System.setProperty("sun.java2d.opengl","true");

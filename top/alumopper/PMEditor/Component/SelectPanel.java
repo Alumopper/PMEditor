@@ -70,10 +70,9 @@ public class SelectPanel extends PMPanel{
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
-				//读取音频
-				Song temp = null;
+				//尝试读取音频
 				try {
-					temp = new Song(f.getPath(),200);
+					new Song(f.getPath(),200);
 				} catch (IOException | NoPlayerException | CannotRealizeException ex) {
 					ex.printStackTrace();
 				}
@@ -133,7 +132,7 @@ public class SelectPanel extends PMPanel{
 	}
 
 	public void draw() {
-		info.repaint();
+		info.update();
 	}
 
 	public void loop(){

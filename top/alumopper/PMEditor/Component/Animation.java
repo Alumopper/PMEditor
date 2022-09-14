@@ -1,12 +1,13 @@
 package top.alumopper.PMEditor.Component;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
- * 一个动画
+ * 一个带有动画的组件
  * @see InfoBox
  */
-public class Animation {
+public abstract class Animation extends JPanel {
 
     /**
      * 以秒为单位，表示动画的时间轴的起点
@@ -82,13 +83,10 @@ public class Animation {
         if (System.currentTimeMillis()/1000.0-startTime < time){
             double currTime = System.currentTimeMillis()/1000.0 - startTime;
             if(currTime < inTime){
-                //System.out.println(currTime);
                 in(currTime,g);
             }else if(currTime > time - outTime){
-                //System.out.println(currTime);
                 out(currTime,g);
             }else {
-                //System.out.println(currTime);
                 dur(currTime,g);
             }
         }
