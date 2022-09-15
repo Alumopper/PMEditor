@@ -2,6 +2,7 @@ package top.alumopper.PMEditor.Component;
 
 import top.alumopper.PMEditor.Editor;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 /**
  * 储存了消息弹窗的一个容器。会在垂直方向上依次绘制其中的弹窗。弹窗之间的垂直间距为5
  */
-public class InfoBoxContainer extends Panel {
+public class InfoBoxContainer extends JPanel {
     public boolean treadStop = false;
     private final ArrayList<InfoBox> infos;
 
@@ -17,6 +18,7 @@ public class InfoBoxContainer extends Panel {
         infos = new ArrayList<>();
         this.setLayout(null);
         this.setBounds(x, y, width, height);
+        this.setBackground(Color.black);
     }
 
     public void addInfo(String text, String text2, int type, ClickOp clickOp){

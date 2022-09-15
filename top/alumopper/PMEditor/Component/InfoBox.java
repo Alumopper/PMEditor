@@ -51,13 +51,13 @@ public class InfoBox extends Animation  {
             this.setBackground(new Color(255, 72, 72, 255));
         }
         clickOps = new ArrayList<>();
-//        this.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                super.mouseClicked(e);
-//                whenClicked();
-//            }
-//        });
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                whenClicked();
+            }
+        });
     }
 
     @Override
