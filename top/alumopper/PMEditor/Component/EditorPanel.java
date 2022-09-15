@@ -279,7 +279,7 @@ public class EditorPanel extends PMPanel implements Runnable {
             curr.type = Note.DRAG;
         }
         if(!cr.addNote(curr,curLine)){
-            info.addInfo("放置失败，note重叠",1);
+            info.addInfo("放置失败，note重叠",1, new ClickOp());
             return;
         }
         opm.addOp(new PutNote(curr));
@@ -289,7 +289,7 @@ public class EditorPanel extends PMPanel implements Runnable {
         //添加note
         Note curr = new Note(key,time,noteType);
         if(!cr.addNote(curr,curLine)){
-            info.addInfo("放置失败，note重叠",1);
+            info.addInfo("放置失败，note重叠",1, new ClickOp());
             return;
         }
         opm.addOp(new PutNote(curr));
@@ -297,7 +297,7 @@ public class EditorPanel extends PMPanel implements Runnable {
 
     public void putNote(Note n){
         if(!cr.addNote(n,curLine)){
-            info.addInfo("放置失败，note重叠",1);
+            info.addInfo("放置失败，note重叠",1, new ClickOp());
             return;
         }
         opm.addOp(new PutNote(n));
@@ -354,7 +354,7 @@ public class EditorPanel extends PMPanel implements Runnable {
 
     public void save(){
         cr.save();
-        info.addInfo("保存成功",0);
+        info.addInfo("保存成功",0, new ClickOp());
         notSaved = false;
         fr.setTitle("PMEditor - " + Editor.chart);
     }
@@ -363,7 +363,7 @@ public class EditorPanel extends PMPanel implements Runnable {
             //添加判定线
             cr.chart.lines.add(new Line(1.0f));
             curLine = cr.chart.lines.size() - 1;
-            info.addInfo("成功添加新判定线",0);
+            info.addInfo("成功添加新判定线",0, new ClickOp());
     }
 
     public void setRate(String l){

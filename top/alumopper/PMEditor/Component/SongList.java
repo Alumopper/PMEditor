@@ -63,13 +63,13 @@ public class SongList extends JPanel {
 						if(new File(f.getPath()+"/"+infos[0]+".wav").exists() && new File(f.getPath()+"/chart.json").exists()){
 							songs.add(infos);
 						}else {
-							sp.info.addInfo("文件夹缺失文件：",f.getName(),1);
+							sp.info.addInfo("文件夹缺失文件：",f.getName(),1, new ClickOp());
 						}
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
 				}else {
-					sp.info.addInfo("无效的文件夹",f.getName(),1);
+					sp.info.addInfo("无效的文件夹",f.getName(),1, new ClickOp());
 				}
 			}
 		}

@@ -6,12 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  * InfoBox是一种有动画效果的信息框，可以用三种颜色标记不同等级的信息
  * 信息框的大小通常是100*40
  */
-public class InfoBox extends Animation {
+public class InfoBox extends Animation  {
     public static final int width = 200;
     public static final int height = 40;
 
@@ -23,9 +24,12 @@ public class InfoBox extends Animation {
      */
     public final JLabel text;
     public final JLabel text2;
+    public final ArrayList<ClickOp> clickOps;
+    public InfoBoxContainer container;
+
     private Point currLoc;
 
-    public InfoBox(int colorType, String text, String text2) {
+    public InfoBox(String text, String text2, int colorType) {
         super(5, 0.3, 1);
         this.setOpaque(true);
         this.setLayout(null);
@@ -46,13 +50,14 @@ public class InfoBox extends Animation {
         }else if(colorType == 2){
             this.setBackground(new Color(255, 72, 72, 255));
         }
-        //如果点击，显示详细信息
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-            }
-        });
+        clickOps = new ArrayList<>();
+//        this.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                super.mouseClicked(e);
+//                whenClicked();
+//            }
+//        });
     }
 
     @Override
@@ -103,5 +108,17 @@ public class InfoBox extends Animation {
      */
     static double easeInCubic(double t, double b, double c, double d) {
         return c * (t /= d) * t * t + b;
+    }
+
+    public InfoBox addClickOp(ClickOp clickOp){
+        clickOp.infoBox = this;
+        clickOps.add(clickOp);
+        return this;
+    }
+
+    private void whenClicked(){
+        for (ClickOp clickOp: clickOps) {
+            clickOp.afterClick();
+        }
     }
 }

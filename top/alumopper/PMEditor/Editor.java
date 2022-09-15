@@ -22,10 +22,12 @@ public class Editor implements Runnable {
      * 其他 - 选曲界面
      */
     private static String qwq;
+
+    public static EditorFrame currFrame;
+
     public final static Font f = new Font("TsangerYuMo W02",Font.PLAIN,15);
 
     public static void main(String[] args) {
-        System.setProperty("sun.java2d.opengl","true");
         qwq = args[0];
         new Thread(new Editor()).start();
     }
@@ -58,6 +60,7 @@ public class Editor implements Runnable {
                         }
                     }
             );
+            currFrame = fr;
             new Thread(ep).start();
         }else{
             EditorFrame fr = new EditorFrame("PMEditor");
@@ -77,6 +80,7 @@ public class Editor implements Runnable {
                         }
                     }
             );
+            currFrame = fr;
             new Thread(sp).start();
         }
     }

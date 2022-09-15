@@ -1,5 +1,6 @@
 package top.alumopper.PMEditor.Operation;
 
+import top.alumopper.PMEditor.Component.ClickOp;
 import top.alumopper.PMEditor.Component.EditorPanel;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class OperationManager {
             opHistory.get(index+1).redo(ep);
             index ++;
         }else {
-            ep.info.addInfo("无更多操作可重做",1);
+            ep.info.addInfo("无更多操作可重做",1, new ClickOp());
         }
     }
 
@@ -42,7 +43,7 @@ public class OperationManager {
             opHistory.get(index).revoke(ep);
             index --;
         }else {
-            ep.info.addInfo("无更多操作可撤销",1);
+            ep.info.addInfo("无更多操作可撤销",1, new ClickOp());
         }
     }
 

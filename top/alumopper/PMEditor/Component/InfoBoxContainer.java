@@ -1,5 +1,7 @@
 package top.alumopper.PMEditor.Component;
 
+import top.alumopper.PMEditor.Editor;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -8,6 +10,7 @@ import java.util.ArrayList;
  * 储存了消息弹窗的一个容器。会在垂直方向上依次绘制其中的弹窗。弹窗之间的垂直间距为5
  */
 public class InfoBoxContainer extends Panel {
+    public boolean treadStop = false;
     private final ArrayList<InfoBox> infos;
 
     public InfoBoxContainer(int x,int y, int width, int height){
@@ -16,14 +19,40 @@ public class InfoBoxContainer extends Panel {
         this.setBounds(x, y, width, height);
     }
 
-    public void addInfo(String text, String text2,int type){
-        infos.add(0,new InfoBox(type,text,text2));
+    public void addInfo(String text, String text2, int type, ClickOp clickOp){
+        infos.add(0,new InfoBox(text,text2,type).addClickOp(clickOp));
         this.add(infos.get(0));
+        infos.get(0).container = this;
     }
 
-    public void addInfo(String text,int type){
-        infos.add(0,new InfoBox(type,text,""));
+    public void addInfo(String text,int type, ClickOp clickOp){
+        infos.add(0,new InfoBox(text,"",type).addClickOp(clickOp));
         this.add(infos.get(0));
+        infos.get(0).container = this;
+    }
+
+    public boolean removeInfo(InfoBox infoBox){
+        int index = infos.indexOf(infoBox);
+        if(index == -1){
+            //如果此infoBox不存在于数组中
+            return false;
+        }else {
+            this.remove(infoBox);
+            infos.remove(index);
+            return true;
+        }
+    }
+
+
+    public boolean removeInfo(int index){
+        if(index >= infos.size()){
+            //超范围
+            return false;
+        }else {
+            this.remove(infos.get(index));
+            infos.remove(index);
+            return true;
+        }
     }
 
     public void update(){
@@ -31,8 +60,7 @@ public class InfoBoxContainer extends Panel {
         //清除过期弹窗
         for (int i = 0; i < infos.size(); i++) {
             if(infos.get(i).isOut()){
-                this.remove(infos.get(i));
-                infos.remove(i);
+                removeInfo(i);
                 i --;
             }
         }

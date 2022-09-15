@@ -36,12 +36,14 @@ public class SelectPanel extends PMPanel{
 		confirm.setBounds(470,500,100,37);
 		confirm.setBackground(new Color(95, 201, 101, 255));
 		confirm.addActionListener(e -> {
+			info.treadStop = true;
 			Editor.chart = songList.songs.get(songList.index)[0];
 			Editor.main(new String[]{"edit"});
 			fr.dispose();
 		});
 		confirm.setFocusable(false);
 		this.add(confirm);
+		//创建谱面
 		JButton addchart = new JButton("创建谱面");
 		addchart.setFont(new Font("TsangerYuMo W02",Font.PLAIN,15));
 		addchart.setBounds(470,400,100,37);
@@ -62,7 +64,7 @@ public class SelectPanel extends PMPanel{
 				File f = fc.getSelectedFile();
 				File qwq = new File("./res/charts/" + f.getName().substring(0,f.getName().lastIndexOf('.')));
 				if(qwq.mkdirs()){
-					info.addInfo("创建文件夹失败",qwq.getPath(),2);
+					info.addInfo("创建文件夹失败",qwq.getPath(),2, new ClickOp());
 				}
 				File out = new File("./res/charts/" +f.getName().substring(0,f.getName().lastIndexOf('.'))+"/"+f.getName());
 				try {
@@ -112,7 +114,7 @@ public class SelectPanel extends PMPanel{
 				}
 				songList.chartScan();
 				songList.updateLabel();
-				info.addInfo("成功创建谱面",f.getName(),0);
+				info.addInfo("成功创建谱面",f.getName(),0, new ClickOp());
 				try {
 					UIManager.setLookAndFeel(new MetalLookAndFeel());
 				} catch (Exception e1) {

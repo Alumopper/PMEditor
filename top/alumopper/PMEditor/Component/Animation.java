@@ -12,23 +12,27 @@ public abstract class Animation extends JPanel {
     /**
      * 以秒为单位，表示动画的时间轴的起点
      */
-    public final double startTime;
+    public double startTime;
     /**
      * 总时间
      */
-    public final double time;
+    public double time;
     /**
      * 渐进时间
      */
-    public final double inTime;
+    public double inTime;
     /**
      * 渐出时间
      */
-    public final double outTime;
+    public double outTime;
     /**
      * 稳定时间
      */
-    public final double durTime;
+    public double durTime;
+    /**
+     * 目前的时间
+     */
+    public double currTime;
     /**
      * 动画渲染的位置
      */
@@ -81,7 +85,7 @@ public abstract class Animation extends JPanel {
      */
     public void draw(Graphics2D g) {
         if (System.currentTimeMillis()/1000.0-startTime < time){
-            double currTime = System.currentTimeMillis()/1000.0 - startTime;
+            currTime = System.currentTimeMillis()/1000.0 - startTime;
             if(currTime < inTime){
                 in(currTime,g);
             }else if(currTime > time - outTime){

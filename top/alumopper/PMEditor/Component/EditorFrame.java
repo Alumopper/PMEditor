@@ -53,14 +53,24 @@ public class EditorFrame extends JFrame {
 		if(sp == null && e.getID() == WindowEvent.WINDOW_CLOSING){
 			//为editor
 			if(ep.opm.isChanged() && !ep.pressCtrl){
-				ep.info.addInfo("更改未保存！更改将丢失","按ctrl强行关闭",1);
+				ep.info.addInfo("更改未保存！更改将丢失","按ctrl强行关闭",1, new ClickOp());
 			}else{
+				ep.info.treadStop = true;
 				ep.cr.song.songPlayer.close();
 				Editor.main(new String[]{"qwq"});
 				this.dispose();
 			}
 		}else {
 			super.processWindowEvent(e);
+		}
+	}
+
+	public void addInfo(String text1, String text2, int type, ClickOp clickOp){
+		if(sp != null){
+			sp.info.addInfo(text1, text2, type, clickOp);
+		}
+		if(ep != null){
+			ep.info.addInfo(text1, text2, type, clickOp);
 		}
 	}
 }
