@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PMEditor:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/PMEditor_jar2</output-path>
+    <root id="archive" name="PMEditor.jar">
+      <element id="module-output" name="PMEditor" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/jna-5.12.1.jar" path-in-jar="/" />
+      <element id="library" level="project" name="fastjson-1.2.83-javadoc" />
+    </root>
+  </artifact>
+</component>

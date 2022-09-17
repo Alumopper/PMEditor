@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -49,7 +50,6 @@ public class SongList extends JPanel {
 		//扫描曲目
 		songs.clear();
 		File[] files = new File("./res/charts").listFiles();
-		assert files != null;
 		for (File f : files) {
 			if(f.isDirectory()){
 				File info = new File(f.getPath()+"/info.txt");
@@ -63,13 +63,33 @@ public class SongList extends JPanel {
 						if(new File(f.getPath()+"/"+infos[0]+".wav").exists() && new File(f.getPath()+"/chart.json").exists()){
 							songs.add(infos);
 						}else {
-							sp.info.addInfo("文件夹缺失文件：",f.getName(),1, new ClickOp());
+							sp.info.addInfo("文件夹缺失文件：",f.getName(),1, new ClickOp(){
+								@Override
+								public void afterClick(){
+									super.afterClick();
+									try {
+										Desktop.getDesktop().open(f);
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+							});
 						}
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
 				}else {
-					sp.info.addInfo("无效的文件夹",f.getName(),1, new ClickOp());
+					sp.info.addInfo("无效的文件夹",f.getName(),1, new ClickOp(){
+						@Override
+						public void afterClick(){
+							super.afterClick();
+							try {
+								Desktop.getDesktop().open(f.getParentFile());
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					});
 				}
 			}
 		}

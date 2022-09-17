@@ -70,7 +70,7 @@ public class Editor implements Runnable {
             fr.setResizable(false);
             SelectPanel sp = new SelectPanel(fr);
             fr.addSp(sp);
-            fr.setIconImage(new ImageIcon("./res/icon.ico").getImage());
+            fr.setIconImage(new ImageIcon("./res/icon.png").getImage());
             fr.setVisible(true);
             fr.addWindowListener(
                     new WindowAdapter() {

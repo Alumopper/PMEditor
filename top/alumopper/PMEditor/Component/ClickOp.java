@@ -16,6 +16,7 @@ public class ClickOp {
 	 */
 	public void afterClick(){
 		if(!infoBox.isOut()){
+			infoBox.setBackground(infoBox.getBackground().brighter());
 			infoBox.time -= infoBox.time - infoBox.outTime - infoBox.currTime;
 		}
 	}

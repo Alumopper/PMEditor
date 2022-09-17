@@ -34,10 +34,10 @@ public class InfoBox extends Animation  {
         this.setOpaque(true);
         this.setLayout(null);
         this.text = new JLabel(text);
-        this.text.setBounds(10,1,100,18);
+        this.text.setBounds(10,1,200,18);
         this.text.setFont(Editor.f);
         this.text2 = new JLabel(text2);
-        this.text2.setBounds(10,19,100,18);
+        this.text2.setBounds(10,19,200,18);
         this.text2.setFont(Editor.f);
         this.setLayout(null);
         this.setBounds(114514,1919810,width,height);

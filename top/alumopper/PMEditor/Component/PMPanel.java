@@ -6,9 +6,12 @@ import java.awt.*;
 public class PMPanel extends JPanel implements Runnable {
 
 	public final Frame fr;
+	public final InfoBoxContainer info;
 
 	public PMPanel(Frame fr){
 		this.fr = fr;
+		info = new InfoBoxContainer(650,250,250,300);
+		this.add(info);
 	}
 
 	public void draw(){}

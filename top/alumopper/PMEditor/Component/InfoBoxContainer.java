@@ -58,7 +58,7 @@ public class InfoBoxContainer extends JPanel {
     }
 
     public void update(){
-        repaint();
+        //repaint();
         //清除过期弹窗
         for (int i = 0; i < infos.size(); i++) {
             if(infos.get(i).isOut()){
