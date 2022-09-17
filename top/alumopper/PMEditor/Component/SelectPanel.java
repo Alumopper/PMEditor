@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
 import java.io.*;
+import java.util.Objects;
 
 public class SelectPanel extends PMPanel{
 	//选曲面板
@@ -25,6 +26,7 @@ public class SelectPanel extends PMPanel{
 		songList.setBounds(50,30,400,500);
 		songList.updateLabel();
 		this.add(songList);
+		//确认
 		JButton confirm = new JButton("确认");
 		confirm.setFont(Editor.f);
 		confirm.setBounds(470,500,100,37);
@@ -37,6 +39,41 @@ public class SelectPanel extends PMPanel{
 		});
 		confirm.setFocusable(false);
 		this.add(confirm);
+		//删除谱面
+		JButton delete = new JButton("删除谱面");
+		delete.setFont(Editor.f);
+		delete.setBounds(470,450,100,37);
+		delete.setBackground(new Color(0xE05757));
+		delete.addActionListener(e -> {
+			//删除选择的谱面
+			String selectedChart = songList.songs.get(songList.index)[0];
+			JOptionPane warn = new JOptionPane("谱面将会永久删除！（真的很久！）", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
+			warn.setFont(Editor.f);
+			JDialog dialog = warn.createDialog(Editor.currFrame, "警告");
+			dialog.setFont(Editor.f);
+			dialog.setVisible(true);
+			Object re = warn.getValue();
+			if((Integer) warn.getValue() == JOptionPane.YES_OPTION){
+				//删除谱面
+				for (File f : Objects.requireNonNull(new File("./res/charts/" + selectedChart).listFiles())) {
+					if(!f.delete()){
+						info.addInfo("删除失败","无法删除" + f.getName(), 2, new ClickOp());
+					}
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException ex) {
+						ex.printStackTrace();
+					}
+				}
+				new File("./res/charts/" + selectedChart).delete();
+				info.addInfo("已删除谱面",selectedChart,0,new ClickOp());
+				songList.chartScan();
+				songList.updateLabel();
+				songList.repaint();
+			}
+		});
+		delete.setFocusable(false);
+		add(delete);
 		//创建谱面
 		JButton addchart = new JButton("创建谱面");
 		addchart.setFont(Editor.f);
@@ -58,6 +95,9 @@ public class SelectPanel extends PMPanel{
 				proc.waitFor();
 			} catch (IOException | InterruptedException e1) {
 				e1.printStackTrace();
+			}
+			if(f == null){
+				return;
 			}
 			new ChartCreateFrame(SelectPanel.this, f);
 		});
