@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * 储存了消息弹窗的一个容器。会在垂直方向上依次绘制其中的弹窗。弹窗之间的垂直间距为5
  */
 public class InfoBoxContainer extends JPanel {
-    public boolean treadStop = false;
     private final ArrayList<InfoBox> infos;
 
     public InfoBoxContainer(int x,int y, int width, int height){
