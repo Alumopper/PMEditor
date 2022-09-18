@@ -3,6 +3,8 @@ package top.alumopper.PMEditor.Component;
 import top.alumopper.PMEditor.Editor;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
@@ -55,10 +57,11 @@ public class EditorFrame extends JFrame {
 			if(ep.opm.isChanged() && !ep.pressCtrl){
 				ep.info.addInfo("更改未保存！更改将丢失","按ctrl强行关闭",1, new ClickOp());
 			}else{
-				ep.info.treadStop = true;
-				ep.cr.song.songPlayer.close();
+				ep.cr.song = null;
 				Editor.main(new String[]{"qwq"});
+				KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(ep.k);
 				this.dispose();
+				Thread.currentThread().interrupt();
 			}
 		}else {
 			super.processWindowEvent(e);

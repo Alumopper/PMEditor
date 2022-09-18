@@ -60,6 +60,7 @@ public class Editor implements Runnable {
                         }
                     }
             );
+            currFrame.dispose();
             currFrame = fr;
             new Thread(ep).start();
         }else{

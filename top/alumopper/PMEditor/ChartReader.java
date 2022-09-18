@@ -65,7 +65,7 @@ public class ChartReader {
             e.printStackTrace();
         }
 
-        this.chart.song.time = (float)((song.songPlayer.getDuration().getSeconds()*100)/100.0);
+        this.chart.song.time = Float.parseFloat(String.format("%.2f",song.getLength()));
     }
 
     /**

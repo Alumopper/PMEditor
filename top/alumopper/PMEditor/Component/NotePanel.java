@@ -149,7 +149,7 @@ public class NotePanel extends Canvas {
                 if(n.time < ep.time){
                     if(!n.judged){
                         n.judged = true;
-                        if(ep.cr.song.songPlayer.getState() == Controller.Started)
+                        if(ep.cr.song.isStarted())
                             n.effect.setMediaTime(new Time(0));
                             n.effect.start();
                     }
@@ -169,11 +169,11 @@ public class NotePanel extends Canvas {
             }
         }
     }
-
-    private void drawProgressBar(Graphics2D g){
-        g.drawLine(100,25,800,25);
-        g.fillOval((int)(100+ep.time/ep.cr.song.songPlayer.getDuration().getSeconds()*700),20,10,10);
-    }
+//
+//    private void drawProgressBar(Graphics2D g){
+//        g.drawLine(100,25,800,25);
+//        g.fillOval((int)(100+ep.time/ep.cr.song.getLength()*700),20,10,10);
+//    }
 
     public void repaint(){
         //离屏绘制

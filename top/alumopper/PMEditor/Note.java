@@ -108,7 +108,7 @@ public class Note {
      */
     public boolean isIllegalTap(){
         if(this.type == TAP){
-            return this.key % 2 != 0;
+            return this.key % 2 == 0;
         }
         return false;
     }

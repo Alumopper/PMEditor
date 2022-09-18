@@ -32,10 +32,10 @@ public class SelectPanel extends PMPanel{
 		confirm.setBounds(470,500,100,37);
 		confirm.setBackground(new Color(95, 201, 101, 255));
 		confirm.addActionListener(e -> {
-			info.treadStop = true;
 			Editor.chart = songList.songs.get(songList.index)[0];
+			info.addInfo("正在打开谱面", Editor.chart,0, new ClickOp());
 			Editor.main(new String[]{"edit"});
-			fr.dispose();
+			Thread.currentThread().interrupt();
 		});
 		confirm.setFocusable(false);
 		this.add(confirm);

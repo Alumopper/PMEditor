@@ -6,7 +6,6 @@ import top.alumopper.PMEditor.Operation.OperationManager;
 import top.alumopper.PMEditor.Operation.PutNote;
 
 import javax.media.Player;
-import javax.media.Time;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -38,6 +37,9 @@ public class EditorPanel extends PMPanel implements Runnable {
 
     public int noteType = Note.TAP;
     public boolean notSaved = false;
+
+    private long lastTime;
+    public KeyEventDispatcher k;
 
     public EditorPanel(JFrame fr) throws IOException {
 
@@ -129,7 +131,7 @@ public class EditorPanel extends PMPanel implements Runnable {
                     //进度条
                     t.setValue(100-(int)(time/cr.chart.song.time*100));
                     //强制暂停
-                    cr.song.songPlayer.stop();
+                    cr.song.pause();
                 }
             }else if(pressCtrl && !pressShift){
                 //调整缩放
@@ -143,81 +145,85 @@ public class EditorPanel extends PMPanel implements Runnable {
                 if(np.lines > 16) np.lines = 16;
             }
         });
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-                e -> {
-                    //键盘监听
-                    //ctrl
-                    pressCtrl = e.isControlDown();
-                    //shift
-                    pressShift = e.isShiftDown();
-                    //空格
-                    if(e.getKeyCode() == KeyEvent.VK_SPACE){
-                        if(pressSpace){
-                            pressSpace = false;
-                            //播放
-                            if(cr.song.songPlayer.getState() != Player.Started){
-                                cr.song.songPlayer.setRate(curRate);
-                                cr.song.songPlayer.setMediaTime(new Time(time));
-                                cr.song.songPlayer.start();
-                            }else{
-                                cr.song.songPlayer.stop();
-                            }
+        k = new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                //键盘监听
+                //ctrl
+                pressCtrl = e.isControlDown();
+                //shift
+                pressShift = e.isShiftDown();
+                //空格
+                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                    if(pressSpace){
+                        pressSpace = false;
+                        //播放
+                        if(cr.song.isPaused()){
+                            cr.song.setRate(curRate);
+                            cr.song.setTime((float) time);
+                            lastTime = System.currentTimeMillis();
+                            cr.song.start();
                         }else{
-                            pressSpace = true;
+                            cr.song.pause();
+                            time = cr.song.getTime();
                         }
+                    }else{
+                        pressSpace = true;
                     }
-                    //N
-                    if(e.getKeyCode() == KeyEvent.VK_N){
-                        if(pressN){
-                            pressN = false;
-                            //新建判定线
-                            if(pressCtrl){
-                                newLine();
-                            }
-                        }else{
-                            pressN = true;
-                        }
-                    }
-                    //S
-                    if(e.getKeyCode() == KeyEvent.VK_S){
-                        if(pressS){
-                            pressS = false;
-                            //保存
-                            if(pressCtrl){
-                                save();
-                                opm.save();
-                            }
-                        }else{
-                            pressS = true;
-                        }
-                    }
-                    //Y
-                    if(e.getKeyCode() == KeyEvent.VK_Y){
-                        if(pressY){
-                            pressY = false;
-                            //重做
-                            if(pressCtrl){
-                                opm.redo();
-                            }
-                        }else{
-                            pressY = true;
-                        }
-                    }
-                    //Z
-                    if(e.getKeyCode() == KeyEvent.VK_Z){
-                        if(pressZ){
-                            pressZ = false;
-                            //撤销
-                            if(pressCtrl){
-                                opm.revoke();
-                            }
-                        }else{
-                            pressZ = true;
-                        }
-                    }
-                    return false;
                 }
-        );
+                //N
+                if(e.getKeyCode() == KeyEvent.VK_N){
+                    if(pressN){
+                        pressN = false;
+                        //新建判定线
+                        if(pressCtrl){
+                            newLine();
+                        }
+                    }else{
+                        pressN = true;
+                    }
+                }
+                //S
+                if(e.getKeyCode() == KeyEvent.VK_S){
+                    if(pressS){
+                        pressS = false;
+                        //保存
+                        if(pressCtrl){
+                            save();
+                            opm.save();
+                        }
+                    }else{
+                        pressS = true;
+                    }
+                }
+                //Y
+                if(e.getKeyCode() == KeyEvent.VK_Y){
+                    if(pressY){
+                        pressY = false;
+                        //重做
+                        if(pressCtrl){
+                            opm.redo();
+                        }
+                    }else{
+                        pressY = true;
+                    }
+                }
+                //Z
+                if(e.getKeyCode() == KeyEvent.VK_Z){
+                    if(pressZ){
+                        pressZ = false;
+                        //撤销
+                        if(pressCtrl){
+                            opm.revoke();
+                        }
+                    }else{
+                        pressZ = true;
+                    }
+                }
+                return false;
+            }
+        };
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(k);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -228,7 +234,7 @@ public class EditorPanel extends PMPanel implements Runnable {
                 ip.playRateTF.setVisible(false);
                 ip.playRate.setVisible(true);
                 setRate(ip.playRateTF.getText());
-                cr.song.songPlayer.setRate(curRate);
+                cr.song.setRate(curRate);
             }
         });
     }
@@ -243,15 +249,17 @@ public class EditorPanel extends PMPanel implements Runnable {
 
         //更新自己的Label
         beat.setText("Beat "+np.bar+":"+np.beat+"/"+np.lines);
-        timeDis.setText(String.format("%.2f/%.2f",time,cr.song.songPlayer.getDuration().getSeconds()));
+        timeDis.setText(String.format("%.2f/%.2f",time,cr.chart.song.time));
 
         //更新frame标题
         fr.setTitle("PMEditor - " + Editor.chart + (opm.isChanged() ? " *" :""));
     }
 
     public void loop(){
-        if(cr.song.songPlayer.getState() == Player.Started){
-            time = cr.song.songPlayer.getMediaTime().getSeconds();
+        if(cr.song.isStarted()){
+            long curTime = System.currentTimeMillis();
+            time += (curTime - lastTime)/1000.0f;
+            lastTime = curTime;
             t.setValue(100-(int)(time/cr.chart.song.time*100));
         }
         draw();

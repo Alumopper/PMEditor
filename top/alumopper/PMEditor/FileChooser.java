@@ -10,8 +10,10 @@ import java.io.File;
  * 可能存在内存问题<br>
  * 在创建一个新的FileChooser实例以后，会创建一个窗口用于选择文件。
  * 在文件的选择过程中，程序的执行将被阻塞，直到文件选择完毕。
- * 选择所得的文件将会储存在file变量中，并通过方法getFilePath获取
+ * 选择所得的文件将会储存在file变量中，并通过方法getFilePath获取<br>
+ * 注意，此类在使用后貌似会导致程序的路径识别出现问题，具体表现为相对路径识别更改
  */
+@Deprecated
 public class FileChooser {
 
 	private final String file;
