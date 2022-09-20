@@ -16,6 +16,8 @@ import java.util.Objects;
  */
 public class ChartCreateFrame extends InlineFrame{
 
+	private final static long BPM_MAX_TESTTIME = 20000;
+
 	private final JLabel title;
 	private final JLabel chartAuthor;
 	private final JTextField chartAuthorT;
@@ -26,6 +28,49 @@ public class ChartCreateFrame extends InlineFrame{
 	private final JButton addchart;
 	private final JButton bpmGet;
 	private final File f;
+
+	private String v = null;	//bpm测量线程返回值
+	private long startTime;
+	private static Process process;
+	private final Thread bpmTest = new Thread(){
+		@Override
+		public void run(){
+			v = getBpm(f.getPath());
+			if(v.startsWith("Python Exception")){
+				parentPanel.info.addInfo("Python错误",v.substring(16),2, new ClickOp() {
+					@Override
+					public void afterClick(){
+						super.afterClick();
+						JOptionPane.showMessageDialog(parentPanel,v);
+					}
+				});
+			}else {
+				bpmT.setText(String.valueOf(getBpm(f.getPath())));
+			}
+		}
+	};	//bpm测量线程
+	private final Thread bpmTestTimer = new Thread(){
+		@Override
+		public void run(){
+			while (v == null){
+				if(System.currentTimeMillis() - startTime > BPM_MAX_TESTTIME){
+					//超时
+					process.destroy();
+					parentPanel.info.addInfo("bpm测量超时(" + BPM_MAX_TESTTIME + "ms)", "点此手动测量", 2, new ClickOp(){
+						@Override
+						public void afterClick(){
+							super.afterClick();
+							try {
+								Desktop.getDesktop().browse(new URI("https://www.freejishu.com/tools/bpm.html"));
+							} catch (IOException | URISyntaxException ex) {
+								ex.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+		}
+	};
 
 	public SelectPanel parentPanel;
 
@@ -107,25 +152,11 @@ public class ChartCreateFrame extends InlineFrame{
 		bpmGet.setBounds(250,160,100,25);
 		bpmGet.setBackground(new Color(211, 186, 60, 255));
 		bpmGet.addActionListener(e -> {
-//			try {
-//				Desktop.getDesktop().browse(new URI("https://www.freejishu.com/tools/bpm.html"));
-//			} catch (IOException | URISyntaxException ex) {
-//				ex.printStackTrace();
-//			}
 			//测量bpm喵
-			parentPanel.info.addInfo("开始测量Bpm：",f.getName(),0, new ClickOp());
-			String v = getBpm(f.getPath());
-			if(v.startsWith("Python Exception")){
-				parentPanel.info.addInfo("Python错误",v.substring(16),2, new ClickOp() {
-					@Override
-					public void afterClick(){
-						super.afterClick();
-						JOptionPane.showMessageDialog(parentPanel,v);
-					}
-				});
-			}else {
-				bpmT.setText(String.valueOf(getBpm(f.getPath())));
-			}
+			parentPanel.info.addInfo("开始测量Bpm(最长" + BPM_MAX_TESTTIME + "ms)：",f.getName(),0, new ClickOp());
+			bpmTest.start();
+			bpmTestTimer.start();
+			startTime = System.currentTimeMillis();
 		});
 		add(bpmGet);
 	}
@@ -137,7 +168,7 @@ public class ChartCreateFrame extends InlineFrame{
 			String[] args1 = new String[] {"python", f.getPath(), fileName};
 			ProcessBuilder proc = new ProcessBuilder(args1);// 执行py文件
 			proc.redirectErrorStream(true);
-			Process process = proc.start();
+			process = proc.start();
 			BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String line = null;
 			while ((line = in.readLine()) != null) {

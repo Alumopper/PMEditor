@@ -22,6 +22,8 @@ public class InfoBox extends Animation  {
      * 1-黄色<br>
      * 2-红色
      */
+    private final int colorType;
+
     public final JLabel text;
     public final JLabel text2;
     public final ArrayList<ClickOp> clickOps;
@@ -31,6 +33,7 @@ public class InfoBox extends Animation  {
 
     public InfoBox(String text, String text2, int colorType) {
         super(5, 0.3, 1);
+        this.colorType = colorType;
         this.setOpaque(true);
         this.setLayout(null);
         this.text = new JLabel(text);
@@ -120,5 +123,18 @@ public class InfoBox extends Animation  {
         for (ClickOp clickOp: clickOps) {
             clickOp.afterClick();
         }
+    }
+
+    public String toString(){
+        if(colorType == 0){
+            return "[INFO]" + text.getText() + " -> " + text2.getText();
+        }
+        if(colorType == 1){
+            return "[WARN]" + text.getText() + " -> " + text2.getText();
+        }
+        if(colorType == 2){
+            return "[ERROR]" + text.getText() + " -> " + text2.getText();
+        }
+        return "[UNKNOWN]" + text.getText() + " -> " + text2.getText();
     }
 }

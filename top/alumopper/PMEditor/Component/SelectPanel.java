@@ -113,11 +113,7 @@ public class SelectPanel extends PMPanel{
 	}
 
 	public void draw() {
-		info.update();
-	}
-
-	public void loop(){
-		draw();
+		info.draw();
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import top.alumopper.PMEditor.Component.ClickOp;
+import top.alumopper.PMEditor.Component.InfoBox;
 
 import javax.media.CannotRealizeException;
 import javax.media.Manager;
@@ -57,7 +58,7 @@ public class ChartReader {
                     n.effect = Manager.createRealizedPlayer(new File("res/media/tap.wav").toURI().toURL());
                     //检查note是否合法
                     if(n.isIllegalTap()){
-                        Editor.currFrame.addInfo("存在非法note","位于"+String.format("%.2f",n.time)+"，第"+n.key+"列",1, new ClickOp());
+                        Editor.transmittedInfos.addInfo("存在非法note","位于"+String.format("%.2f",n.time)+"，第"+n.key+"列",1, new ClickOp());
                     }
                 }
             }

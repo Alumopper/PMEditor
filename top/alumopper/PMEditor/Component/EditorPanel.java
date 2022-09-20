@@ -245,7 +245,7 @@ public class EditorPanel extends PMPanel implements Runnable {
         //信息展示区更新
         ip.updateLabel();
         //消息框
-        info.update();
+        info.draw();
 
         //更新自己的Label
         beat.setText("Beat "+np.bar+":"+np.beat+"/"+np.lines);
@@ -262,7 +262,6 @@ public class EditorPanel extends PMPanel implements Runnable {
             lastTime = curTime;
             t.setValue(100-(int)(time/cr.chart.song.time*100));
         }
-        draw();
     }
 
     @Override

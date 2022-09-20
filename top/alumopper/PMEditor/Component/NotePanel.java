@@ -106,8 +106,12 @@ public class NotePanel extends Canvas {
         //g.drawLine(80,550,440,550);
         //鼠标相对位置
         Point mousePos = MouseInfo.getPointerInfo().getLocation();
-        mousePos.x -= ep.fr.getLocationOnScreen().x;
-        mousePos.y -= ep.fr.getLocationOnScreen().y + 30;   //+30为窗口顶部白色区域误差
+        try{
+            mousePos.x -= ep.fr.getLocationOnScreen().x;
+            mousePos.y -= ep.fr.getLocationOnScreen().y + 30;   //+30为窗口顶部白色区域误差
+        }catch (IllegalComponentStateException e){
+            System.out.println(e.getClass());
+        }
         //此后的mousePos为相对窗口显示区域右上角为原点，坐标轴方向不变
         int beat = 0;
         //如果在范围内，就绘制按键
@@ -181,8 +185,10 @@ public class NotePanel extends Canvas {
         if(im == null)
             return;  //特性避免
         Graphics dbg = im.getGraphics();
+        if(dbg == null) return;
         paint(dbg);
         Graphics g = getGraphics();
+        if(g == null) return;
         g.drawImage(im,0,0,null);
         g.dispose();
     }

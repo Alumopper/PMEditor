@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * 制谱器主类，包含了main方法
@@ -26,6 +28,16 @@ public class Editor implements Runnable {
     public static EditorFrame currFrame;
 
     public final static Font f = new Font("TsangerYuMo W02",Font.PLAIN,15);
+
+    /**
+     * 暂存的信息
+     */
+    public static InfoBoxContainer transmittedInfos = new InfoBoxContainer();
+
+    static {
+        Thread drawThread = new Thread(new EditorDrawer());
+        drawThread.start();
+    }
 
     public static void main(String[] args) {
         qwq = args[0];
@@ -62,6 +74,7 @@ public class Editor implements Runnable {
             );
             currFrame.dispose();
             currFrame = fr;
+            currFrame.addInfoFrom(transmittedInfos);
             new Thread(ep).start();
         }else{
             EditorFrame fr = new EditorFrame("PMEditor");
@@ -82,6 +95,7 @@ public class Editor implements Runnable {
                     }
             );
             currFrame = fr;
+            currFrame.addInfoFrom(transmittedInfos);
             new Thread(sp).start();
         }
     }

@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * 制谱器窗口
@@ -74,6 +75,25 @@ public class EditorFrame extends JFrame {
 		}
 		if(ep != null){
 			ep.info.addInfo(text1, text2, type, clickOp);
+		}
+	}
+
+	public void draw(){
+		//绘制此窗口的EditorComponent
+		if(sp != null){
+			sp.draw();
+		}
+		if(ep != null){
+			ep.draw();
+		}
+	}
+
+	public void addInfoFrom(InfoBoxContainer i){
+		if(sp != null){
+			sp.info.addInfoFrom(i);
+		}
+		if(ep != null){
+			ep.info.addInfoFrom(i);
 		}
 	}
 }
