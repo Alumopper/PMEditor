@@ -2,18 +2,14 @@ package top.alumopper.PMEditor.Component;
 
 import top.alumopper.PMEditor.*;
 
-import javax.media.Controller;
 import javax.media.Time;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 public class NotePanel extends Canvas {
     public int lines;   //横线数量
     public double scale;    //缩放大小（有多少横线间隔）
-    public ArrayList<Tap> taps; //tap音符
-    public ArrayList<Drag> drags;   //drag音符
     public double eachTime; //粗横线之间的时间间隔
     public int bar;         //鼠标对应的小节数
     public int beat;        //鼠标对应的拍数
@@ -122,7 +118,7 @@ public class NotePanel extends Canvas {
             mousePos.y = (int)(
                 Math.round(
                     (
-                        (mousePos.y-50)/(delPixel/lines)+1  //+1，防止向上超出范围
+                        (mousePos.y-80)/(delPixel/lines)+1  //+1，防止向上超出范围
                     )
                 )*(delPixel/lines)-4-baseLoc
             );
@@ -153,9 +149,10 @@ public class NotePanel extends Canvas {
                 if(n.time < ep.time){
                     if(!n.judged){
                         n.judged = true;
-                        if(ep.cr.song.isStarted())
+                        if(ep.cr.song.isStarted()){
                             n.effect.setMediaTime(new Time(0));
                             n.effect.start();
+                        }
                     }
                     continue;
                 }
@@ -173,11 +170,6 @@ public class NotePanel extends Canvas {
             }
         }
     }
-//
-//    private void drawProgressBar(Graphics2D g){
-//        g.drawLine(100,25,800,25);
-//        g.fillOval((int)(100+ep.time/ep.cr.song.getLength()*700),20,10,10);
-//    }
 
     public void repaint(){
         //离屏绘制

@@ -1,13 +1,13 @@
 package top.alumopper.PMEditor;
 
+import javafx.embed.swing.JFXPanel;
 import top.alumopper.PMEditor.Component.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * 制谱器主类，包含了main方法
@@ -35,6 +35,16 @@ public class Editor implements Runnable {
     public static InfoBoxContainer transmittedInfos = new InfoBoxContainer();
 
     static {
+        final CountDownLatch latch = new CountDownLatch(1);
+        SwingUtilities.invokeLater(() -> {
+            new JFXPanel(); // initializes JavaFX environment
+            latch.countDown();
+        });
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         Thread drawThread = new Thread(new EditorDrawer());
         drawThread.start();
     }

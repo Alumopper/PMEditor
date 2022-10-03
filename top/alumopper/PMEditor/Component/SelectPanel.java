@@ -1,11 +1,8 @@
 package top.alumopper.PMEditor.Component;
 
 import top.alumopper.PMEditor.Editor;
-import top.alumopper.PMEditor.FileChooser;
 import top.alumopper.PMEditor.Song;
 
-import javax.media.CannotRealizeException;
-import javax.media.NoPlayerException;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
@@ -52,7 +49,6 @@ public class SelectPanel extends PMPanel{
 			JDialog dialog = warn.createDialog(Editor.currFrame, "警告");
 			dialog.setFont(Editor.f);
 			dialog.setVisible(true);
-			Object re = warn.getValue();
 			if((Integer) warn.getValue() == JOptionPane.YES_OPTION){
 				//删除谱面
 				for (File f : Objects.requireNonNull(new File("./res/charts/" + selectedChart).listFiles())) {
@@ -65,8 +61,11 @@ public class SelectPanel extends PMPanel{
 						ex.printStackTrace();
 					}
 				}
-				new File("./res/charts/" + selectedChart).delete();
-				info.addInfo("已删除谱面",selectedChart,0,new ClickOp());
+				if(new File("./res/charts/" + selectedChart).delete()){
+					info.addInfo("已删除谱面",selectedChart,0,new ClickOp());
+				}else {
+					info.addInfo("删除谱面失败",selectedChart,2,new ClickOp());
+				}
 				songList.chartScan();
 				songList.updateLabel();
 				songList.repaint();
@@ -87,7 +86,7 @@ public class SelectPanel extends PMPanel{
 				Process proc = Runtime.getRuntime().exec(args1);// 执行py文件
 
 				BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-				String line = null;
+				String line;
 				while ((line = in.readLine()) != null) {
 					f = new File(line);
 				}
@@ -146,8 +145,8 @@ public class SelectPanel extends PMPanel{
 		}
 		//尝试读取音频
 		try {
-			new Song(f.getPath(), 200);
-		} catch (IOException | NoPlayerException | CannotRealizeException ex) {
+			Song.createSong(f.getPath(), 200);
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		//创建空白谱面文件

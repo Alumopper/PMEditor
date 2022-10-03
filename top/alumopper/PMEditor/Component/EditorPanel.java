@@ -5,7 +5,6 @@ import top.alumopper.PMEditor.Operation.DeleteNote;
 import top.alumopper.PMEditor.Operation.OperationManager;
 import top.alumopper.PMEditor.Operation.PutNote;
 
-import javax.media.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -38,7 +37,6 @@ public class EditorPanel extends PMPanel implements Runnable {
     public int noteType = Note.TAP;
     public boolean notSaved = false;
 
-    private long lastTime;
     public KeyEventDispatcher k;
 
     public EditorPanel(JFrame fr) throws IOException {
@@ -117,6 +115,7 @@ public class EditorPanel extends PMPanel implements Runnable {
         menuBar.setVisible(true);
 
         //事件
+        //鼠标滚轮
         this.addMouseWheelListener(e -> {
             //滚轮
             if(!pressCtrl && !pressShift){
@@ -145,85 +144,83 @@ public class EditorPanel extends PMPanel implements Runnable {
                 if(np.lines > 16) np.lines = 16;
             }
         });
-        k = new KeyEventDispatcher() {
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent e) {
-                //键盘监听
-                //ctrl
-                pressCtrl = e.isControlDown();
-                //shift
-                pressShift = e.isShiftDown();
-                //空格
-                if(e.getKeyCode() == KeyEvent.VK_SPACE){
-                    if(pressSpace){
-                        pressSpace = false;
-                        //播放
-                        if(cr.song.isPaused()){
-                            cr.song.setRate(curRate);
-                            cr.song.setTime((float) time);
-                            lastTime = System.currentTimeMillis();
-                            cr.song.start();
-                        }else{
-                            cr.song.pause();
-                            time = cr.song.getTime();
-                        }
+        //键盘
+        k = e -> {
+            //键盘监听
+            //ctrl
+            pressCtrl = e.isControlDown();
+            //shift
+            pressShift = e.isShiftDown();
+            //空格
+            if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                if(pressSpace){
+                    pressSpace = false;
+                    //播放
+                    if(!cr.song.isStarted()){
+                        cr.song.setRate(curRate);
+                        cr.song.setTime((float) time);
+                        cr.song.start();
                     }else{
-                        pressSpace = true;
+                        cr.song.pause();
+                        time = cr.song.getTime();
                     }
+                }else{
+                    pressSpace = true;
                 }
-                //N
-                if(e.getKeyCode() == KeyEvent.VK_N){
-                    if(pressN){
-                        pressN = false;
-                        //新建判定线
-                        if(pressCtrl){
-                            newLine();
-                        }
-                    }else{
-                        pressN = true;
-                    }
-                }
-                //S
-                if(e.getKeyCode() == KeyEvent.VK_S){
-                    if(pressS){
-                        pressS = false;
-                        //保存
-                        if(pressCtrl){
-                            save();
-                            opm.save();
-                        }
-                    }else{
-                        pressS = true;
-                    }
-                }
-                //Y
-                if(e.getKeyCode() == KeyEvent.VK_Y){
-                    if(pressY){
-                        pressY = false;
-                        //重做
-                        if(pressCtrl){
-                            opm.redo();
-                        }
-                    }else{
-                        pressY = true;
-                    }
-                }
-                //Z
-                if(e.getKeyCode() == KeyEvent.VK_Z){
-                    if(pressZ){
-                        pressZ = false;
-                        //撤销
-                        if(pressCtrl){
-                            opm.revoke();
-                        }
-                    }else{
-                        pressZ = true;
-                    }
-                }
-                return false;
             }
+            //N
+            if(e.getKeyCode() == KeyEvent.VK_N){
+                if(pressN){
+                    pressN = false;
+                    //新建判定线
+                    if(pressCtrl){
+                        newLine();
+                    }
+                }else{
+                    pressN = true;
+                }
+            }
+            //S
+            if(e.getKeyCode() == KeyEvent.VK_S){
+                if(pressS){
+                    pressS = false;
+                    //保存
+                    if(pressCtrl){
+                        save();
+                        opm.save();
+                    }
+                }else{
+                    pressS = true;
+                }
+            }
+            //Y
+            if(e.getKeyCode() == KeyEvent.VK_Y){
+                if(pressY){
+                    pressY = false;
+                    //重做
+                    if(pressCtrl){
+                        opm.redo();
+                    }
+                }else{
+                    pressY = true;
+                }
+            }
+            //Z
+            if(e.getKeyCode() == KeyEvent.VK_Z){
+                if(pressZ){
+                    pressZ = false;
+                    //撤销
+                    if(pressCtrl){
+                        opm.revoke();
+                    }
+                }else{
+                    pressZ = true;
+                }
+            }
+            return false;
         };
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(k);
+        //鼠标点击
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -257,9 +254,7 @@ public class EditorPanel extends PMPanel implements Runnable {
 
     public void loop(){
         if(cr.song.isStarted()){
-            long curTime = System.currentTimeMillis();
-            time += (curTime - lastTime)/1000.0f;
-            lastTime = curTime;
+            time = cr.song.getTime();
             t.setValue(100-(int)(time/cr.chart.song.time*100));
         }
     }
@@ -267,6 +262,11 @@ public class EditorPanel extends PMPanel implements Runnable {
     @Override
     public void run() {
         while (fr.isVisible()){
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             loop();
         }
     }

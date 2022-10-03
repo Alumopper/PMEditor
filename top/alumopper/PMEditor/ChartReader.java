@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import top.alumopper.PMEditor.Component.ClickOp;
-import top.alumopper.PMEditor.Component.InfoBox;
 
 import javax.media.CannotRealizeException;
 import javax.media.Manager;
 import javax.media.NoPlayerException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
 
 /**
  * 读取谱面的Json文件
@@ -52,13 +50,19 @@ public class ChartReader {
         JSONObject chart = JSON.parseObject(String.valueOf(builder));
         this.chart = JSON.toJavaObject(chart,Chart.class);
         try {
-            song = new Song("./res/charts/" + Editor.chart + "/" + chart.getJSONObject("song").getString("name"),chart.getJSONObject("song").getFloat("bpm"));
+            song = Song.createSong("./res/charts/" + Editor.chart + "/" + chart.getJSONObject("song").getString("name"),chart.getJSONObject("song").getFloat("bpm"));
             for (Line l : this.chart.lines) {
                 for (Note n : l.notes) {
                     n.effect = Manager.createRealizedPlayer(new File("res/media/tap.wav").toURI().toURL());
                     //检查note是否合法
                     if(n.isIllegalTap()){
-                        Editor.transmittedInfos.addInfo("存在非法note","位于"+String.format("%.2f",n.time)+"，第"+n.key+"列",1, new ClickOp());
+                        Editor.transmittedInfos.addInfo("存在非法note","位于"+String.format("%.2f",n.time)+"，第"+n.key+"列",1, new ClickOp(){
+                            @Override
+                            public void afterClick(){
+                                super.afterClick();
+                                Editor.currFrame.ep.time = n.time;
+                            }
+                        });
                     }
                 }
             }
@@ -66,6 +70,7 @@ public class ChartReader {
             e.printStackTrace();
         }
 
+        assert song != null;
         this.chart.song.time = Float.parseFloat(String.format("%.2f",song.getLength()));
     }
 
